@@ -7,29 +7,27 @@ package nikita.kim.model;
 
 import java.io.Serializable;
 import java.time.LocalDate;
-import java.util.Date;
-
-
-
 
 /**
  *
  * @author Никита
  */
-public class Sin implements Serializable{
+public class Act implements Serializable{
     
     
     private Integer id;
+    
+    private Boolean sin;
     
     private LocalDate date;
     
     private String description;
     
-    public Sin()
+    public Act()
         {
         }
             
-    public Sin(LocalDate date,String description)
+    public Act(LocalDate date,String description)
         {
             this.date=date;
             this.description=description;
@@ -77,10 +75,19 @@ public class Sin implements Serializable{
     public void setDescription(String description) {
         this.description = description;
     }
-    
-    
-    
-    
-    
+
+    /**
+     * @return the sin
+     */
+    public Boolean getSin() {
+        return sin;
+    }
+
+    /**
+     * @param sin the sin to set
+     */
+    public void setSin(Boolean sin) {
+        this.sin = sin;
+    }
     
 }

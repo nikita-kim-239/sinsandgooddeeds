@@ -87,6 +87,8 @@ public class RegisterServlet extends HttpServlet{
                             ex.printStackTrace();
                         }
                     
+                    resp.sendRedirect(req.getContextPath()+"/login");
+                    
                 }
             else
                 {

@@ -22,8 +22,8 @@ public class User {
     
     private String password;
     
-    private List<Sin> sins;
+    private List<Act> acts;
     
-    private List<GoodDeed> goodDeeds;
+
     
 }

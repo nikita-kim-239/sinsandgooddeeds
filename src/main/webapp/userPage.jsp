@@ -19,24 +19,27 @@
     </head>
     <body>
         
-        <a href="sinForm">Новый грех</a>
+        <a href="create">Создать</a>
         <br/>
         <a href="logout">Выйти</a>
         <br/>
         <table border="1" cellpadding="5">
             <caption><h2>Грехи</h2></caption>
             <tr>
-                <th>Дата</th>         
+                <th>Дата</th>
                 <th>Описание</th>
             </tr>
-            <c:forEach var="sin" items="${sins}">
-            <jsp:useBean id="sin" class="nikita.kim.model.Sin" scope="request"/>
-                <tr>
+            <c:forEach var="act" items="${acts}">
+            <jsp:useBean id="act" class="nikita.kim.model.Act" scope="request"/>
+                <tr class="${act.sin ? 'hell':'heaven'}">
 
-                    <td><c:out value="${sin.date}"/></td>       
-                    <td><c:out value="${sin.description}"/></td>
+                    <td><c:out value="${act.date}"/></td>       
+                    <td><c:out value="${act.description}"/></td>
                 </tr>
             </c:forEach>
         </table>
+        
+        
+        
     </body>
 </html>

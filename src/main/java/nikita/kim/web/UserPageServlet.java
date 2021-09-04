@@ -22,7 +22,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import nikita.kim.model.Sin;
+import nikita.kim.model.Act;
 import nikita.kim.util.SecurityUtil;
 
 /**
@@ -38,7 +38,7 @@ public class UserPageServlet extends HttpServlet{
     private static final String JDBC_LOGIN="postgres";
     private static final String JDBC_PASSWORD="postgres";
     private static final String JDBC_URL="jdbc:postgresql://localhost:5432/sinsandgooddeeds";
-    private static final String SELECT_SINS_QUERY="select * from sins where userid=?";
+    private static final String SELECT_SINS_QUERY="select * from acts where userid=?";
     
     
     @Override
@@ -47,7 +47,7 @@ public class UserPageServlet extends HttpServlet{
             Connection connection=null;
             
             req.setCharacterEncoding("UTF-8");
-            List <Sin> sins = new ArrayList<>();
+            List <Act> acts = new ArrayList<>();
                     try{
                         connection=DriverManager.getConnection(JDBC_URL,JDBC_LOGIN,JDBC_PASSWORD);
                         PreparedStatement pstmt = connection.prepareStatement(SELECT_SINS_QUERY);
@@ -55,10 +55,11 @@ public class UserPageServlet extends HttpServlet{
                         ResultSet rs=pstmt.executeQuery();
                         while(rs.next())
                             {                        
-                                Sin sin=new Sin();
-                                sin.setDate(rs.getObject(2,LocalDate.class));
-                                sin.setDescription(rs.getString("description"));
-                                sins.add(sin);
+                                Act act=new Act();
+                                act.setDate(rs.getObject(3,LocalDate.class));
+                                act.setSin(rs.getBoolean("sin"));
+                                act.setDescription(rs.getString("description"));
+                                acts.add(act);
                                 
                             }
                         }
@@ -66,7 +67,7 @@ public class UserPageServlet extends HttpServlet{
                         {
                             ex.printStackTrace();
                         }
-                    req.setAttribute("sins",sins);
+                    req.setAttribute("acts",acts);
                     ServletContext servletContext = getServletContext();
                     RequestDispatcher requestDispatcher = servletContext.getRequestDispatcher("/userPage.jsp");         
                     requestDispatcher.forward(req, resp);

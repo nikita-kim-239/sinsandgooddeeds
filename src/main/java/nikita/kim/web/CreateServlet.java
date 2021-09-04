@@ -23,14 +23,14 @@ import nikita.kim.util.SecurityUtil;
 
 
 
-@WebServlet("/sinForm")
-public class NewSinServlet extends HttpServlet{
+@WebServlet("/create")
+public class CreateServlet extends HttpServlet{
     
     
     private static final String JDBC_LOGIN="postgres";
     private static final String JDBC_PASSWORD="postgres";
     private static final String JDBC_URL="jdbc:postgresql://localhost:5432/sinsandgooddeeds";
-    private static final String INSERT_QUERY="insert into sins (dateofsin,description,userid) values (?,?,?)";
+    private static final String INSERT_QUERY="insert into acts (sin,acted,description,userid) values (?,?,?,?)";
     
     
     @Override
@@ -38,7 +38,7 @@ public class NewSinServlet extends HttpServlet{
         {
             
             ServletContext servletContext = getServletContext();
-            RequestDispatcher requestDispatcher = servletContext.getRequestDispatcher("/sinForm.jsp");         
+            RequestDispatcher requestDispatcher = servletContext.getRequestDispatcher("/createForm.jsp");         
             requestDispatcher.forward(req, resp);   
         }
     
@@ -49,6 +49,7 @@ public class NewSinServlet extends HttpServlet{
             req.setCharacterEncoding("UTF-8");
             String description=req.getParameter("description");
             LocalDate date =LocalDate.parse(req.getParameter("date"));
+            Boolean isSin=(req.getParameter("sin").equals("true"))?true:false;
             try {
 		Class.forName("org.postgresql.Driver");
                 } catch (ClassNotFoundException e) {
@@ -60,9 +61,10 @@ public class NewSinServlet extends HttpServlet{
             try{
                     connection=DriverManager.getConnection(JDBC_URL,JDBC_LOGIN,JDBC_PASSWORD);
                     PreparedStatement pstmt = connection.prepareStatement(INSERT_QUERY);
-                    pstmt.setObject(1,date);
-                    pstmt.setString(2,description);
-                    pstmt.setInt(3,SecurityUtil.getCurrentUser());
+                    pstmt.setBoolean(1,isSin);
+                    pstmt.setObject(2,date);
+                    pstmt.setString(3,description);                    
+                    pstmt.setInt(4,SecurityUtil.getCurrentUser());
                     pstmt.executeUpdate();
                     
                     }

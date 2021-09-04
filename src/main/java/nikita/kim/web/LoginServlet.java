@@ -22,7 +22,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import nikita.kim.model.Sin;
+
 import nikita.kim.util.SecurityUtil;
 
 

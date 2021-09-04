@@ -9,11 +9,16 @@
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <title>Новый грех</title>
+        <title>Новый поступок</title>
     </head>
     <body>
-        <form method="POST" action="sinForm">
+        <form method="POST" action="create">
         <input type="date" name="date">Дата</input>
+        <br/>
+        <select name="sin">
+            <option value="true">Грех</option>
+            <option value="false">Доброе дело</option>            
+        </select>
         <br/>
         <input type="text" name="description">Описание</input>
         <br/>
