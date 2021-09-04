@@ -5,24 +5,38 @@
  */
 package nikita.kim.model;
 
+import java.io.Serializable;
 import java.time.LocalDate;
+import java.util.Date;
+
+
+
 
 /**
  *
  * @author Никита
  */
-public class Sin {
+public class Sin implements Serializable{
     
     
     private Integer id;
     
     private LocalDate date;
     
-            
-    
-    private SinType sinType;
-    
     private String description;
+    
+    public Sin()
+        {
+        }
+            
+    public Sin(LocalDate date,String description)
+        {
+            this.date=date;
+            this.description=description;
+        }
+
+    
+    
 
     /**
      * @return the id
@@ -52,23 +66,7 @@ public class Sin {
         this.date = date;
     }
 
-    /**
-     * @return the sinType
-     */
-    public SinType getSinType() {
-        return sinType;
-    }
-
-    /**
-     * @param sinType the sinType to set
-     */
-    public void setSinType(SinType sinType) {
-        this.sinType = sinType;
-    }
-
-    /**
-     * @return the description
-     */
+  
     public String getDescription() {
         return description;
     }
