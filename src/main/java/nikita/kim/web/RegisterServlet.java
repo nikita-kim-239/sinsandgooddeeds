@@ -21,6 +21,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import nikita.kim.util.SecurityUtil;
 
 
 
@@ -36,6 +37,8 @@ public class RegisterServlet extends HttpServlet{
     @Override
     protected void doGet(HttpServletRequest req,HttpServletResponse resp) throws ServletException,IOException
         {
+              if (SecurityUtil.getCurrentUser()==null)
+                resp.sendRedirect(req.getContextPath()+"/login");  
               ServletContext servletContext = getServletContext();
               RequestDispatcher requestDispatcher = servletContext.getRequestDispatcher("/register.jsp");         
               requestDispatcher.forward(req, resp);          

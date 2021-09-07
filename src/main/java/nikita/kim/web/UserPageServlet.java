@@ -44,6 +44,12 @@ public class UserPageServlet extends HttpServlet{
     @Override
     protected void doGet(HttpServletRequest req,HttpServletResponse resp) throws ServletException,IOException
         {
+            
+            
+            if (SecurityUtil.getCurrentUser()==null)
+                resp.sendRedirect(req.getContextPath()+"/login");
+                
+            
             Connection connection=null;
             
             req.setCharacterEncoding("UTF-8");
