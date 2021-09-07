@@ -47,9 +47,12 @@ public class UserPageServlet extends HttpServlet{
             
             
             if (SecurityUtil.getCurrentUser()==null)
-                resp.sendRedirect(req.getContextPath()+"/login");
+                {
+                    resp.sendRedirect(req.getContextPath()+"/login"); 
+                }
                 
-            
+            else
+                {   
             Connection connection=null;
             
             req.setCharacterEncoding("UTF-8");
@@ -77,6 +80,7 @@ public class UserPageServlet extends HttpServlet{
                     ServletContext servletContext = getServletContext();
                     RequestDispatcher requestDispatcher = servletContext.getRequestDispatcher("/userPage.jsp");         
                     requestDispatcher.forward(req, resp);
+                }    
         }
     
 }

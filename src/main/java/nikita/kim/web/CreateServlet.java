@@ -37,9 +37,17 @@ public class CreateServlet extends HttpServlet{
     protected void doGet(HttpServletRequest req,HttpServletResponse resp) throws ServletException,IOException
         {
             
+            
+            if (SecurityUtil.getCurrentUser()==null)
+                {   
+                    resp.sendRedirect(req.getContextPath()+"/login");   
+                }
+            else
+                {
             ServletContext servletContext = getServletContext();
             RequestDispatcher requestDispatcher = servletContext.getRequestDispatcher("/createForm.jsp");         
-            requestDispatcher.forward(req, resp);   
+            requestDispatcher.forward(req, resp);  
+                }
         }
     
     @Override
