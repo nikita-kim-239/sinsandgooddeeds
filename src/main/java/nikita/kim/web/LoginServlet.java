@@ -24,6 +24,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import nikita.kim.util.SecurityUtil;
+import org.apache.log4j.Logger;
 
 
 
@@ -31,7 +32,7 @@ import nikita.kim.util.SecurityUtil;
 @WebServlet("/login")
 public class LoginServlet extends HttpServlet{
     
-    
+    private static final Logger log = Logger.getLogger(LoginServlet.class);
     private static final String JDBC_LOGIN="postgres";
     private static final String JDBC_PASSWORD="postgres";
     private static final String JDBC_URL="jdbc:postgresql://localhost:5432/sinsandgooddeeds";
@@ -82,6 +83,7 @@ public class LoginServlet extends HttpServlet{
             if ((users.containsKey(login))&&(users.get(login).equals(password)))
                 {
                     SecurityUtil.setCurrentUser(userIds.get(login));
+                    log.info("redirect to userPage");
                     resp.sendRedirect(req.getContextPath()+"/userPage");
                 }
             else
