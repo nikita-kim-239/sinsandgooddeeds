@@ -32,6 +32,14 @@ public class Act implements Serializable{
             this.date=date;
             this.description=description;
         }
+    
+    public Act(Integer id,Boolean sin,LocalDate date,String description)
+        {
+            this.id=id;
+            this.sin=sin;
+            this.date=date;
+            this.description=description;
+        }
 
     
     
@@ -89,5 +97,12 @@ public class Act implements Serializable{
     public void setSin(Boolean sin) {
         this.sin = sin;
     }
+    
+    
+    @Override
+    public String toString()
+        {
+            return "{Id: "+id+" Sin "+sin+" Date "+date+" Description "+description+" }";
+        }
     
 }

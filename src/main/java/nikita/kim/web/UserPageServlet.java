@@ -47,39 +47,39 @@ public class UserPageServlet extends HttpServlet{
             
             
             if (SecurityUtil.getCurrentUser()==null)
-                {
-                    resp.sendRedirect(req.getContextPath()+"/login"); 
-                }
+            {
+                resp.sendRedirect(req.getContextPath()+"/login"); 
+            }
                 
             else
-                {   
+            {   
             Connection connection=null;
             
             req.setCharacterEncoding("UTF-8");
             List <Act> acts = new ArrayList<>();
-                    try{
-                        connection=DriverManager.getConnection(JDBC_URL,JDBC_LOGIN,JDBC_PASSWORD);
-                        PreparedStatement pstmt = connection.prepareStatement(SELECT_SINS_QUERY);
-                        pstmt.setInt(1,SecurityUtil.getCurrentUser());
-                        ResultSet rs=pstmt.executeQuery();
-                        while(rs.next())
-                            {                        
-                                Act act=new Act();
-                                act.setDate(rs.getObject(3,LocalDate.class));
-                                act.setSin(rs.getBoolean("sin"));
-                                act.setDescription(rs.getString("description"));
-                                acts.add(act);
+            try{
+                connection=DriverManager.getConnection(JDBC_URL,JDBC_LOGIN,JDBC_PASSWORD);
+                PreparedStatement pstmt = connection.prepareStatement(SELECT_SINS_QUERY);
+                pstmt.setInt(1,SecurityUtil.getCurrentUser());
+                ResultSet rs=pstmt.executeQuery();
+                    while(rs.next())
+                        {                        
+                            Act act=new Act();
+                            act.setDate(rs.getObject(3,LocalDate.class));
+                            act.setSin(rs.getBoolean("sin"));
+                            act.setDescription(rs.getString("description"));
+                            acts.add(act);
                                 
-                            }
                         }
-                        catch(SQLException ex)
-                        {
-                            ex.printStackTrace();
-                        }
-                    req.setAttribute("acts",acts);
-                    ServletContext servletContext = getServletContext();
-                    RequestDispatcher requestDispatcher = servletContext.getRequestDispatcher("/userPage.jsp");         
-                    requestDispatcher.forward(req, resp);
+                }
+                catch(SQLException ex)
+                {
+                    ex.printStackTrace();
+                }
+            req.setAttribute("acts",acts);
+            ServletContext servletContext = getServletContext();
+            RequestDispatcher requestDispatcher = servletContext.getRequestDispatcher("/userPage.jsp");         
+            requestDispatcher.forward(req, resp);
                 }    
         }
     
