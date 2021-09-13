@@ -12,7 +12,7 @@
         <title>Новый поступок</title>
     </head>
     <body>
-        <form method="POST" action="create">
+    <form method="POST" action="create">
         <input type="date" name="date">Дата</input>
         <br/>
         <select name="sin">
