@@ -27,8 +27,9 @@ public class Act implements Serializable{
         {
         }
             
-    public Act(LocalDate date,String description)
-        {
+    public Act(Boolean sin,LocalDate date,String description)
+        {   
+            this.sin=sin;
             this.date=date;
             this.description=description;
         }

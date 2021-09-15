@@ -37,10 +37,6 @@ import org.springframework.context.annotation.AnnotationConfigApplicationContext
 public class LoginServlet extends HttpServlet{
     
     private static final Logger log = Logger.getLogger(LoginServlet.class);
-    private static final String JDBC_LOGIN="postgres";
-    private static final String JDBC_PASSWORD="postgres";
-    private static final String JDBC_URL="jdbc:postgresql://localhost:5432/sinsandgooddeeds";
-    private static final String SELECT_USERS_QUERY="select * from users";
     
     private UserRepository userRepository;
     private  AnnotationConfigApplicationContext context;

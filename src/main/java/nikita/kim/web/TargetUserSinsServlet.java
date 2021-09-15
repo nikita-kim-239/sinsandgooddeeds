@@ -22,20 +22,41 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import nikita.kim.config.SpringConfig;
 import nikita.kim.model.Act;
 import nikita.kim.model.User;
+import nikita.kim.model.Vote;
+import nikita.kim.repository.ActRepository;
+import nikita.kim.repository.VoteRepository;
 import nikita.kim.util.SecurityUtil;
+import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 
 
 
 @WebServlet("/usersins")
 public class TargetUserSinsServlet extends HttpServlet{
     
-     private static final String JDBC_LOGIN="postgres";
-    private static final String JDBC_PASSWORD="postgres";
-    private static final String JDBC_URL="jdbc:postgresql://localhost:5432/sinsandgooddeeds";
-    private static final String INSERT_VOTE_QUERY="insert into votes (timeofvote,toheaven,userid,targetuserid) values(?,?,?,?)";
-    private static final String SELECT_ACTS_QUERY="select * from acts where userid=?";
+    
+    
+    private VoteRepository voteRepository;
+    private ActRepository actRepository;
+    private  AnnotationConfigApplicationContext context;
+    
+    @Override
+    public void init()
+        {
+            context=new AnnotationConfigApplicationContext(SpringConfig.class);
+            voteRepository= context.getBean(VoteRepository.class);
+            actRepository=context.getBean(ActRepository.class);
+            
+        }
+    
+    @Override 
+    public void destroy()
+        {
+            context.close();
+            super.destroy();
+        }
     
     @Override
     protected void doGet(HttpServletRequest req,HttpServletResponse resp) throws ServletException,IOException
@@ -52,26 +73,8 @@ public class TargetUserSinsServlet extends HttpServlet{
             Connection connection=null;
             Integer targetUserId=Integer.parseInt(req.getParameter("targetuser"));
             req.setCharacterEncoding("UTF-8");
-            List <Act> acts = new ArrayList<>();
-            try{
-                connection=DriverManager.getConnection(JDBC_URL,JDBC_LOGIN,JDBC_PASSWORD);
-                PreparedStatement pstmt = connection.prepareStatement(SELECT_ACTS_QUERY);
-                pstmt.setInt(1,targetUserId);
-                ResultSet rs=pstmt.executeQuery();
-                    while(rs.next())
-                        {                        
-                            Act act=new Act();
-                            act.setDate(rs.getObject(3,LocalDate.class));
-                            act.setSin(rs.getBoolean("sin"));
-                            act.setDescription(rs.getString("description"));                        
-                            acts.add(act);
-                                
-                        }
-                }
-                catch(SQLException ex)
-                {
-                    ex.printStackTrace();
-                }
+            List <Act> acts =actRepository.getAllByUserId(targetUserId);
+            
             req.setAttribute("acts",acts);
             req.setAttribute("targeruser", targetUserId);
             ServletContext servletContext = getServletContext();
@@ -93,26 +96,12 @@ public class TargetUserSinsServlet extends HttpServlet{
             {   
             Connection connection=null;
             String vote=req.getParameter("vote");
-            Integer targetuser=Integer.parseInt(req.getParameter("targetuser"));
-            LocalDateTime timeofvote=LocalDateTime.now();
+            Integer targetUser=Integer.parseInt(req.getParameter("targetuser"));
+            LocalDateTime timeOfVote=LocalDateTime.now();
             boolean heaven=true;
             if (vote.equals("hell")) 
                 heaven=false;
-            try{
-                connection=DriverManager.getConnection(JDBC_URL,JDBC_LOGIN,JDBC_PASSWORD);
-                PreparedStatement pstmt = connection.prepareStatement(INSERT_VOTE_QUERY);
-                
-                pstmt.setInt(3,SecurityUtil.getCurrentUser());
-                pstmt.setInt(4,targetuser);
-                pstmt.setBoolean(2,heaven);
-                pstmt.setObject(1,timeofvote);
-                pstmt.executeUpdate();
-                    
-                }
-                catch(SQLException ex)
-                {
-                    ex.printStackTrace();
-                }
+            voteRepository.save(new Vote(timeOfVote,heaven,SecurityUtil.getCurrentUser(),targetUser));
             
             resp.sendRedirect(req.getContextPath()+"/userPage");
                 }    

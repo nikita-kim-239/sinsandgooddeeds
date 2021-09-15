@@ -7,6 +7,7 @@ package nikita.kim.config;
 
 import nikita.kim.repository.jdbc.JdbcActRepository;
 import nikita.kim.repository.jdbc.JdbcUserRepository;
+import nikita.kim.repository.jdbc.JdbcVoteRepository;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -21,4 +22,15 @@ public class SpringConfig {
             return new JdbcUserRepository();
         }
     
+    @Bean
+    public JdbcActRepository actRepository()
+        {
+            return new JdbcActRepository();
+        }
+    
+    @Bean
+    public JdbcVoteRepository voteRepository()
+        {
+            return new JdbcVoteRepository();
+        }
 }

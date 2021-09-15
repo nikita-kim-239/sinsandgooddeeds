@@ -19,7 +19,11 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import nikita.kim.config.SpringConfig;
+import nikita.kim.model.Act;
+import nikita.kim.repository.ActRepository;
 import nikita.kim.util.SecurityUtil;
+import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 
 
 
@@ -27,10 +31,23 @@ import nikita.kim.util.SecurityUtil;
 public class CreateServlet extends HttpServlet{
     
     
-    private static final String JDBC_LOGIN="postgres";
-    private static final String JDBC_PASSWORD="postgres";
-    private static final String JDBC_URL="jdbc:postgresql://localhost:5432/sinsandgooddeeds";
-    private static final String INSERT_QUERY="insert into acts (sin,acted,description,userid) values (?,?,?,?)";
+    private ActRepository actRepository;
+    private  AnnotationConfigApplicationContext context;
+    
+    @Override
+    public void init()
+        {
+            context=new AnnotationConfigApplicationContext(SpringConfig.class);
+            actRepository= context.getBean(ActRepository.class);
+            
+        }
+    
+    @Override 
+    public void destroy()
+        {
+            context.close();
+            super.destroy();
+        }
     
     
     @Override
@@ -65,21 +82,7 @@ public class CreateServlet extends HttpServlet{
 		e.printStackTrace();
 		return;
             }  
-            Connection connection=null;
-            try{
-                    connection=DriverManager.getConnection(JDBC_URL,JDBC_LOGIN,JDBC_PASSWORD);
-                    PreparedStatement pstmt = connection.prepareStatement(INSERT_QUERY);
-                    pstmt.setBoolean(1,isSin);
-                    pstmt.setObject(2,date);
-                    pstmt.setString(3,description);                    
-                    pstmt.setInt(4,SecurityUtil.getCurrentUser());
-                    pstmt.executeUpdate();
-                    
-                    }
-                    catch(SQLException ex)
-                    {
-                        ex.printStackTrace();
-                    } 
+            actRepository.save(new Act(isSin,date,description));
             resp.sendRedirect(req.getContextPath()+"/userPage");
         }
  

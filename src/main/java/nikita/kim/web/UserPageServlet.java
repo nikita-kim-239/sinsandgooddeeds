@@ -22,8 +22,11 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import nikita.kim.config.SpringConfig;
 import nikita.kim.model.Act;
+import nikita.kim.repository.ActRepository;
 import nikita.kim.util.SecurityUtil;
+import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 
 /**
  *
@@ -40,6 +43,24 @@ public class UserPageServlet extends HttpServlet{
     private static final String JDBC_URL="jdbc:postgresql://localhost:5432/sinsandgooddeeds";
     private static final String SELECT_SINS_QUERY="select * from acts where userid=?";
     
+    private ActRepository actRepository;
+    private  AnnotationConfigApplicationContext context;
+    
+    @Override
+    public void init()
+        {
+            context=new AnnotationConfigApplicationContext(SpringConfig.class);
+            actRepository= context.getBean(ActRepository.class);
+            
+        }
+    
+    @Override 
+    public void destroy()
+        {
+            context.close();
+            super.destroy();
+        }
+    
     
     @Override
     protected void doGet(HttpServletRequest req,HttpServletResponse resp) throws ServletException,IOException
@@ -53,29 +74,12 @@ public class UserPageServlet extends HttpServlet{
                 
             else
             {   
-            Connection connection=null;
-            
+
+       
             req.setCharacterEncoding("UTF-8");
-            List <Act> acts = new ArrayList<>();
-            try{
-                connection=DriverManager.getConnection(JDBC_URL,JDBC_LOGIN,JDBC_PASSWORD);
-                PreparedStatement pstmt = connection.prepareStatement(SELECT_SINS_QUERY);
-                pstmt.setInt(1,SecurityUtil.getCurrentUser());
-                ResultSet rs=pstmt.executeQuery();
-                    while(rs.next())
-                        {                        
-                            Act act=new Act();
-                            act.setDate(rs.getObject(3,LocalDate.class));
-                            act.setSin(rs.getBoolean("sin"));
-                            act.setDescription(rs.getString("description"));
-                            acts.add(act);
-                                
-                        }
-                }
-                catch(SQLException ex)
-                {
-                    ex.printStackTrace();
-                }
+            
+            List <Act> acts = actRepository. getAllByUserId(SecurityUtil.getCurrentUser());
+           
             req.setAttribute("acts",acts);
             
             ServletContext servletContext = getServletContext();

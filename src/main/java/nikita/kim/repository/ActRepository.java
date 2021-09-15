@@ -22,4 +22,5 @@ public interface ActRepository {
     
     List <Act> getAll();
     
+    List <Act> getAllByUserId(Integer id);
 }
