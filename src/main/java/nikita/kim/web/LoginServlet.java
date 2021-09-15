@@ -15,6 +15,7 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
@@ -22,9 +23,12 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import nikita.kim.config.SpringConfig;
+import nikita.kim.repository.UserRepository;
 
 import nikita.kim.util.SecurityUtil;
 import org.apache.log4j.Logger;
+import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 
 
 
@@ -37,6 +41,24 @@ public class LoginServlet extends HttpServlet{
     private static final String JDBC_PASSWORD="postgres";
     private static final String JDBC_URL="jdbc:postgresql://localhost:5432/sinsandgooddeeds";
     private static final String SELECT_USERS_QUERY="select * from users";
+    
+    private UserRepository userRepository;
+    private  AnnotationConfigApplicationContext context;
+    
+    @Override
+    public void init()
+        {
+            context=new AnnotationConfigApplicationContext(SpringConfig.class);
+            userRepository= context.getBean(UserRepository.class);
+            
+        }
+    
+    @Override 
+    public void destroy()
+        {
+            context.close();
+            super.destroy();
+        }
     
     
     @Override
@@ -63,22 +85,9 @@ public class LoginServlet extends HttpServlet{
             }
             Connection connection=null;
             
-            HashMap<String,String> users=new HashMap<>();
-            HashMap<String,Integer> userIds=new HashMap<>();
-                    try{
-                        connection=DriverManager.getConnection(JDBC_URL,JDBC_LOGIN,JDBC_PASSWORD);
-                        Statement stmt = connection.createStatement();
-                        ResultSet rs=stmt.executeQuery(SELECT_USERS_QUERY);
-                        while(rs.next())
-                            {                        
-                                users.put(rs.getString("login"),rs.getString("password"));
-                                userIds.put(rs.getString("login"), rs.getInt("id"));
-                            }
-                        }
-                        catch(SQLException ex)
-                        {
-                            ex.printStackTrace();
-                        }
+            Map<String,String> users=userRepository.getLoginsAndPasswords();
+            Map<String,Integer> userIds=userRepository.getLoginsAndIds();
+
             
             if ((users.containsKey(login))&&(users.get(login).equals(password)))
                 {

@@ -6,6 +6,7 @@
 package nikita.kim.config;
 
 import nikita.kim.repository.jdbc.JdbcActRepository;
+import nikita.kim.repository.jdbc.JdbcUserRepository;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -15,9 +16,9 @@ import org.springframework.context.annotation.Configuration;
 public class SpringConfig {
     
     @Bean
-    public JdbcActRepository actRepository()
+    public JdbcUserRepository userRepository()
         {
-            return new JdbcActRepository();
+            return new JdbcUserRepository();
         }
     
 }

@@ -5,7 +5,9 @@
  */
 package nikita.kim.repository;
 
+
 import java.util.List;
+import java.util.Map;
 import nikita.kim.model.User;
 
 /**
@@ -17,10 +19,18 @@ public interface UserRepository
      
     User save (User user);
     
-    boolean delete(int id);
+    void delete(int id);
     
-    User get(int id);
+    User getUserById(int id);
     
     List<User> getAll();
+    
+    Map <String,String> getLoginsAndPasswords();
+    
+    Map <String,Integer> getLoginsAndIds();
+    
+    List <String> getNames();
+    
+    List <String> getLogins();
     
 }

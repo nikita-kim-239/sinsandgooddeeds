@@ -34,6 +34,6 @@ public class UserService {
     
     public User get(int id)
         {
-            return userRepository.get(id);
+            return userRepository.getUserById(id);
         }
 }

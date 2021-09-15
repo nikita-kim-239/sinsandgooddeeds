@@ -21,18 +21,38 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import nikita.kim.config.SpringConfig;
+import nikita.kim.model.User;
+import nikita.kim.repository.UserRepository;
 import nikita.kim.util.SecurityUtil;
+import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 
 
 
 @WebServlet("/register")
 public class RegisterServlet extends HttpServlet{
     
-    private static final String JDBC_LOGIN="postgres";
-    private static final String JDBC_PASSWORD="postgres";
-    private static final String JDBC_URL="jdbc:postgresql://localhost:5432/sinsandgooddeeds";
-    private static final String SELECT_USERS_QUERY="select * from users";
-    private static final String INSERT_USERS_QUERY="insert into users (name,login,password) values (?,?,?)";
+
+    
+    
+    
+    private UserRepository userRepository;
+    private  AnnotationConfigApplicationContext context;
+    
+    @Override
+    public void init()
+        {
+            context=new AnnotationConfigApplicationContext(SpringConfig.class);
+            userRepository= context.getBean(UserRepository.class);
+            
+        }
+    
+    @Override 
+    public void destroy()
+        {
+            context.close();
+            super.destroy();
+        }
     
     @Override
     protected void doGet(HttpServletRequest req,HttpServletResponse resp) throws ServletException,IOException
@@ -51,44 +71,18 @@ public class RegisterServlet extends HttpServlet{
             String name=req.getParameter("name").trim();
             String login=req.getParameter("login").trim();
             String password=req.getParameter("password").trim();
-            Connection connection=null;
             
-            List<String> logins=new ArrayList<>();
-            List<String> names=new ArrayList<>();
-            
-                    try{
-                        connection=DriverManager.getConnection(JDBC_URL,JDBC_LOGIN,JDBC_PASSWORD);
-                        Statement stmt = connection.createStatement();
-                        ResultSet rs=stmt.executeQuery(SELECT_USERS_QUERY);
-                        while(rs.next())
-                            {                        
-                                logins.add(rs.getString("login"));
-                                
-                                names.add(rs.getString("name"));
-                            }
-                        }
-                        catch(SQLException ex)
-                        {
-                            ex.printStackTrace();
-                        }
-            
+            List<String> logins=userRepository.getLogins();
+            List<String> names=userRepository.getNames();
+ 
             if ((!logins.contains(login))&&(!names.contains(name)))
                 {
                     
-                    try{
-                        connection=DriverManager.getConnection(JDBC_URL,JDBC_LOGIN,JDBC_PASSWORD);
-                        PreparedStatement pstmt = connection.prepareStatement(INSERT_USERS_QUERY);
-                        pstmt.setString(1,name);
-                        pstmt.setString(2,login);
-                        pstmt.setString(3,password);
-                        pstmt.executeUpdate();
-                        
-                        }
-                        catch(SQLException ex)
-                        {
-                            ex.printStackTrace();
-                        }
-                    
+                    User user=new User();
+                    user.setName(name);
+                    user.setLogin(login);
+                    user.setPassword(password);
+                    userRepository.save(user);
                     resp.sendRedirect(req.getContextPath()+"/login");
                     
                 }
