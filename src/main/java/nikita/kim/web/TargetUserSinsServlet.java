@@ -93,8 +93,8 @@ public class TargetUserSinsServlet extends HttpServlet{
             boolean heaven=true;
             if (vote.equals("hell")) 
                 heaven=false;
-            voteRepository.save(new Vote(timeOfVote,heaven,SecurityUtil.getCurrentUser(),targetUserId));
             
+            voteRepository.save(new Vote(timeOfVote,heaven,SecurityUtil.getCurrentUser(),targetUserId));
             resp.sendRedirect(req.getContextPath()+"/userPage");
                 }    
         }

@@ -23,7 +23,23 @@ public class User {
     private String password;
     
     private List<Act> acts;
+    
+  
 
+    
+    public User()
+        {
+        }   
+    
+    public User(Integer id,String name,String login,String password)
+        {
+            this.id=id;
+            this.name=name;
+            this.login=login;
+            this.password=password;
+        }
+            
+    
     /**
      * @return the id
      */
@@ -93,7 +109,15 @@ public class User {
     public void setActs(List<Act> acts) {
         this.acts = acts;
     }
+
+    /**
+     * @return the votesToHeaven
+     */
     
+    public Boolean isNew()
+        {
+            return id==null;
+        }
     
     
 

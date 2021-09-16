@@ -81,8 +81,8 @@ public class JdbcUserRepository implements UserRepository{
     @Override
     public List<User> getAll() {
         
-        List <User> users = new ArrayList<User>();
         
+        List <User> users=new ArrayList<>();
         Connection connection=null;
         try{
                         connection=DriverManager.getConnection(JDBC_URL,JDBC_LOGIN,JDBC_PASSWORD);
@@ -92,7 +92,7 @@ public class JdbcUserRepository implements UserRepository{
                             {                        
                                 User user= new User();
                                 user.setId(rs.getInt("id"));
-                                user.setName(rs.getString("name"));
+                                user.setName(rs.getString("nick"));
                                 user.setLogin(rs.getString("login"));
                                 user.setPassword(rs.getString("password"));
                                 users.add(user);
@@ -111,6 +111,7 @@ public class JdbcUserRepository implements UserRepository{
     public User getUserById(int id) {
         Connection connection=null;
         User user= new User();
+        
         try{
                         connection=DriverManager.getConnection(JDBC_URL,JDBC_LOGIN,JDBC_PASSWORD);
                         PreparedStatement pstmt = connection.prepareStatement(GET_BY_ID_QUERY);
@@ -121,7 +122,7 @@ public class JdbcUserRepository implements UserRepository{
                             {                        
                                 
                                 user.setId(rs.getInt("id"));
-                                user.setName(rs.getString("name"));
+                                user.setName(rs.getString("nick"));
                                 user.setLogin(rs.getString("login"));
                                 user.setPassword(rs.getString("password"));
                                 
@@ -198,7 +199,7 @@ public class JdbcUserRepository implements UserRepository{
                         ResultSet rs=stmt.executeQuery(SELECT_NAMES_QUERY);
                         while(rs.next())
                             {                        
-                                names.add(rs.getString("name"));
+                                names.add(rs.getString("nick"));
                                         
                             }
                         }
