@@ -6,13 +6,6 @@
 package nikita.kim.web;
 
 import java.io.IOException;
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
-import java.util.ArrayList;
 import java.util.List;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletContext;
@@ -24,7 +17,6 @@ import javax.servlet.http.HttpServletResponse;
 import nikita.kim.config.SpringConfig;
 import nikita.kim.model.User;
 import nikita.kim.repository.UserRepository;
-import nikita.kim.util.SecurityUtil;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 
 

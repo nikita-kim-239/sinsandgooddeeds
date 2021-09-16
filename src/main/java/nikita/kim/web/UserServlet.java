@@ -6,13 +6,6 @@
 package nikita.kim.web;
 
 import java.io.IOException;
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.time.LocalDate;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 import javax.servlet.RequestDispatcher;
@@ -23,7 +16,6 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import nikita.kim.config.SpringConfig;
-import nikita.kim.model.Act;
 import nikita.kim.model.User;
 import nikita.kim.repository.UserRepository;
 import nikita.kim.util.SecurityUtil;

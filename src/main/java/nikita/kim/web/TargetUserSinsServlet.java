@@ -7,13 +7,8 @@ package nikita.kim.web;
 
 import java.io.IOException;
 import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
+
 import java.util.List;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletContext;
@@ -24,7 +19,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import nikita.kim.config.SpringConfig;
 import nikita.kim.model.Act;
-import nikita.kim.model.User;
 import nikita.kim.model.Vote;
 import nikita.kim.repository.ActRepository;
 import nikita.kim.repository.VoteRepository;
@@ -37,7 +31,7 @@ import org.springframework.context.annotation.AnnotationConfigApplicationContext
 public class TargetUserSinsServlet extends HttpServlet{
     
     
-    
+    private Integer targetUserId;
     private VoteRepository voteRepository;
     private ActRepository actRepository;
     private  AnnotationConfigApplicationContext context;
@@ -70,8 +64,8 @@ public class TargetUserSinsServlet extends HttpServlet{
                 
             else
             {   
-            Connection connection=null;
-            Integer targetUserId=Integer.parseInt(req.getParameter("targetuser"));
+            
+            targetUserId=Integer.parseInt(req.getParameter("targetuser"));
             req.setCharacterEncoding("UTF-8");
             List <Act> acts =actRepository.getAllByUserId(targetUserId);
             
@@ -93,15 +87,13 @@ public class TargetUserSinsServlet extends HttpServlet{
             }
                 
             else
-            {   
-            Connection connection=null;
-            String vote=req.getParameter("vote");
-            Integer targetUser=Integer.parseInt(req.getParameter("targetuser"));
+            {               
+            String vote=req.getParameter("vote");           
             LocalDateTime timeOfVote=LocalDateTime.now();
             boolean heaven=true;
             if (vote.equals("hell")) 
                 heaven=false;
-            voteRepository.save(new Vote(timeOfVote,heaven,SecurityUtil.getCurrentUser(),targetUser));
+            voteRepository.save(new Vote(timeOfVote,heaven,SecurityUtil.getCurrentUser(),targetUserId));
             
             resp.sendRedirect(req.getContextPath()+"/userPage");
                 }    

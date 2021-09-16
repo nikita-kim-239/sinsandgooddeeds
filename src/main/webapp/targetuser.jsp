@@ -32,8 +32,8 @@
             <option value="heaven">В рай</option>
             <option value="hell">В ад</option>            
         </select>
-        </br>
-        <input type="text" name="targetuser">Id</input>
+        
+        
         <button type="submit">Проголосовать</button>
         </form>    
     </body>
