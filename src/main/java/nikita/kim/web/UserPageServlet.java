@@ -70,7 +70,7 @@ public class UserPageServlet extends HttpServlet{
        
             req.setCharacterEncoding("UTF-8");
             
-            List <Act> acts = actRepository. getAllByUserId(SecurityUtil.getCurrentUser());
+            List <Act> acts = actRepository.getAll(SecurityUtil.getCurrentUser());
            
             req.setAttribute("acts",acts);
             

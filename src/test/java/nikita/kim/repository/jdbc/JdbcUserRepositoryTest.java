@@ -5,6 +5,7 @@
  */
 package nikita.kim.repository.jdbc;
 
+import static java.nio.charset.StandardCharsets.UTF_8;
 import nikita.kim.data.UserTestData;
 import nikita.kim.config.SpringConfig;
 import static nikita.kim.data.UserTestData.NOT_FOUND;
@@ -40,11 +41,22 @@ public class JdbcUserRepositoryTest {
              userRepository=context.getBean(JdbcUserRepository.class);
              dataSource=context.getBean(DriverManagerDataSource.class);
              ResourceDatabasePopulator tables = new ResourceDatabasePopulator();
+             tables.setSqlScriptEncoding(UTF_8.name());
              tables.addScript(new ClassPathResource("db/initDB.sql"));
              tables.addScript(new ClassPathResource("db/populateDB.sql"));
              DatabasePopulatorUtils.execute(tables, dataSource);
         }
     
+    
+    @After
+    public void after()
+        {
+             ResourceDatabasePopulator tables = new ResourceDatabasePopulator();
+             tables.addScript(new ClassPathResource("db/initDB.sql"));
+             tables.addScript(new ClassPathResource("db/populateDB.sql"));
+             tables.setSqlScriptEncoding(UTF_8.name());
+             DatabasePopulatorUtils.execute(tables, dataSource);
+        }
     
     
     
@@ -56,9 +68,6 @@ public class JdbcUserRepositoryTest {
             assertNull(userRepository.getUserById(USER1_ID));
         }
     
-    @Test
-    public void deleteNotFound() throws Exception {
-        assertThrows(RuntimeException.class, () -> userRepository.delete(NOT_FOUND));
-    }
+    
     
 }

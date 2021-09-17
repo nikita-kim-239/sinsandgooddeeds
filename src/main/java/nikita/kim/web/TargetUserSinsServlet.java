@@ -67,7 +67,7 @@ public class TargetUserSinsServlet extends HttpServlet{
             
             targetUserId=Integer.parseInt(req.getParameter("targetuser"));
             req.setCharacterEncoding("UTF-8");
-            List <Act> acts =actRepository.getAllByUserId(targetUserId);
+            List <Act> acts =actRepository.getAll(targetUserId);
             
             req.setAttribute("acts",acts);
             req.setAttribute("targeruser", targetUserId);

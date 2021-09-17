@@ -6,11 +6,9 @@
 package nikita.kim.service;
 
 import nikita.kim.repository.ActRepository;
+import org.springframework.stereotype.Service;
 
-/**
- *
- * @author Никита
- */
+@Service
 public class ActService {
     
     private ActRepository actRepository;

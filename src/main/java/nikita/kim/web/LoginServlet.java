@@ -7,7 +7,7 @@ package nikita.kim.web;
 
 import java.io.IOException;
 import java.sql.Connection;
-import java.util.Map;
+
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
@@ -17,6 +17,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import nikita.kim.config.SpringConfig;
 import nikita.kim.repository.UserRepository;
+import nikita.kim.service.UserService;
 
 import nikita.kim.util.SecurityUtil;
 import org.apache.log4j.Logger;
@@ -30,14 +31,14 @@ public class LoginServlet extends HttpServlet{
     
     private static final Logger log = Logger.getLogger(LoginServlet.class);
     
-    private UserRepository userRepository;
+    private UserService userService;
     private  AnnotationConfigApplicationContext context;
     
     @Override
     public void init()
         {
             context=new AnnotationConfigApplicationContext(SpringConfig.class);
-            userRepository= context.getBean(UserRepository.class);
+            userService= context.getBean(UserService.class);
             
         }
     
@@ -64,28 +65,15 @@ public class LoginServlet extends HttpServlet{
             req.setCharacterEncoding("UTF-8");
             String login=req.getParameter("login").trim();
             String password=req.getParameter("password").trim();
-            
-            try {
-            Class.forName("org.postgresql.Driver");
-            } catch (ClassNotFoundException e) {
-            System.out.println("PostgreSQL JDBC Driver is not found. Include it in your library path ");
-            e.printStackTrace();
-            }
-            Connection connection=null;
-            
-            Map<String,String> users=userRepository.getLoginsAndPasswords();
-            Map<String,Integer> userIds=userRepository.getLoginsAndIds();
-
-            
-            if ((users.containsKey(login))&&(users.get(login).equals(password)))
-                {
-                    SecurityUtil.setCurrentUser(userIds.get(login));
-                    log.info("redirect to userPage");
+          
+            if (userService.autorize(login, password))
+                {                   
+                    log.info(login+" autorized succesfully");
                     resp.sendRedirect(req.getContextPath()+"/userPage");
                 }
             else
                 {
-                    System.out.println("Bad credentials");
+                    log.info(login+" "+password+" are bad credentials");
                     resp.sendRedirect(req.getContextPath()+"/login");
                 }
                     

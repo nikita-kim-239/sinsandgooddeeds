@@ -19,17 +19,17 @@ import nikita.kim.model.User;
 import nikita.kim.repository.UserRepository;
 import nikita.kim.web.LoginServlet;
 import org.apache.log4j.Logger;
+import org.springframework.stereotype.Repository;
 
-/**
- *
- * @author Никита
- */
+
+
+@Repository
 public class JdbcUserRepository implements UserRepository{
 
     private static final Logger log = Logger.getLogger(LoginServlet.class);
     private static final String JDBC_LOGIN="postgres";
     private static final String JDBC_PASSWORD="postgres";
-    private static final String JDBC_URL="jdbc:postgresql://localhost:5432/sinsandgooddeeds";
+    private static final String JDBC_URL="jdbc:postgresql://localhost:5432/sagd?characterEncoding=UTF-8";
     private static final String SELECT_USERS_QUERY="select * from users";
     private static final String INSERT_USERS_QUERY="insert into users (name,login,password) values (?,?,?)";
     private static final String DELETE_USER_QUERY="delete from users where id=?";
@@ -118,18 +118,24 @@ public class JdbcUserRepository implements UserRepository{
                         pstmt.setInt(1,id);
                         ResultSet rs=pstmt.executeQuery();
                         
-                        while(rs.next())
+                        if(rs.next())
                             {                        
                                 
                                 user.setId(rs.getInt("id"));
                                 user.setName(rs.getString("nick"));
                                 user.setLogin(rs.getString("login"));
                                 user.setPassword(rs.getString("password"));
-                                
+                               
                                         
                             }
+                        else
+                            {
+                                
+                                user=null; 
+                               
+                            }
                         
-           }
+        }
                         catch(SQLException ex)
                         {
                             ex.printStackTrace();

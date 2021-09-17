@@ -77,7 +77,7 @@ public class CreateServlet extends HttpServlet{
 		e.printStackTrace();
 		return;
             }  
-            actRepository.save(new Act(isSin,date,description));
+            actRepository.save(new Act(isSin,date,description),SecurityUtil.getCurrentUser());
             resp.sendRedirect(req.getContextPath()+"/userPage");
         }
  

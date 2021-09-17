@@ -11,18 +11,17 @@ import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import nikita.kim.model.Vote;
 import nikita.kim.repository.VoteRepository;
+import org.springframework.stereotype.Repository;
 
-/**
- *
- * @author Никита
- */
+
+@Repository
 public class JdbcVoteRepository implements VoteRepository{
 
     
     private static final String JDBC_LOGIN="postgres";
     private static final String JDBC_PASSWORD="postgres";
-    private static final String JDBC_URL="jdbc:postgresql://localhost:5432/sinsandgooddeeds";
-    private static final String INSERT_VOTE_QUERY="insert into votes (timeofvote,toheaven,userid,targetuserid) values (?,?,?,?)";
+    private static final String JDBC_URL="jdbc:postgresql://localhost:5432/sagd?characterEncoding=UTF-8";
+    private static final String INSERT_VOTE_QUERY="insert into votes (time_of_vote,toheaven,user_id,target_user_id) values (?,?,?,?)";
     
     @Override
     public Vote save(Vote vote) {
