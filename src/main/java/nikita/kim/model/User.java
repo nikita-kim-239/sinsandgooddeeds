@@ -24,6 +24,10 @@ public class User {
     
     private List<Act> acts;
     
+    private Integer votesToHeaven;
+    
+    private Integer votesToHell;
+    
   
 
     
@@ -119,7 +123,53 @@ public class User {
             return id==null;
         }
     
+    @Override
+    public boolean equals(Object o)
+        {   
+            
+            if (o == this) {
+            return true;
+            }
+             if (!(o instanceof User)) {
+            return false;
+            }
+             
+            User u=(User)o; 
+            return id.equals(u.getId())&&name.equals(u.getName())&&login.equals(u.getLogin())&&password.equals(u.getPassword());
+        }
     
+    @Override
+    public String toString()
+        {
+            return "User with id="+id+", name="+name+", login="+login+", password="+password+".";
+        }
 
+    /**
+     * @return the votesToHeaven
+     */
+    public Integer getVotesToHeaven() {
+        return votesToHeaven;
+    }
+
+    /**
+     * @param votesToHeaven the votesToHeaven to set
+     */
+    public void setVotesToHeaven(Integer votesToHeaven) {
+        this.votesToHeaven = votesToHeaven;
+    }
+
+    /**
+     * @return the votesToHell
+     */
+    public Integer getVotesToHell() {
+        return votesToHell;
+    }
+
+    /**
+     * @param votesToHell the votesToHell to set
+     */
+    public void setVotesToHell(Integer votesToHell) {
+        this.votesToHell = votesToHell;
+    }
     
 }

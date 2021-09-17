@@ -6,15 +6,15 @@
 package nikita.kim.repository.jdbc;
 
 import static java.nio.charset.StandardCharsets.UTF_8;
-import nikita.kim.data.UserTestData;
+import static junit.framework.TestCase.assertEquals;
 import nikita.kim.config.SpringConfig;
 import static nikita.kim.data.UserTestData.NOT_FOUND;
 import static nikita.kim.data.UserTestData.USER1_ID;
+import static nikita.kim.data.UserTestData.user1;
 import nikita.kim.repository.UserRepository;
 import org.junit.After;
 
 import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertThrows;
 import org.junit.Before;
 
 import org.junit.Test;
@@ -52,9 +52,7 @@ public class JdbcUserRepositoryTest {
     public void after()
         {
              ResourceDatabasePopulator tables = new ResourceDatabasePopulator();
-             tables.addScript(new ClassPathResource("db/initDB.sql"));
-             tables.addScript(new ClassPathResource("db/populateDB.sql"));
-             tables.setSqlScriptEncoding(UTF_8.name());
+             tables.addScript(new ClassPathResource("db/cleanDB.sql"));            
              DatabasePopulatorUtils.execute(tables, dataSource);
         }
     
@@ -68,6 +66,16 @@ public class JdbcUserRepositoryTest {
             assertNull(userRepository.getUserById(USER1_ID));
         }
     
+    @Test
+    public void deleteNotFound()
+        {
+            assertEquals(false,userRepository.delete(NOT_FOUND));
+        }
     
+    @Test
+    public void getUserById()
+        {
+            assertEquals(user1,userRepository.getUserById(USER1_ID));
+        }
     
 }

@@ -19,7 +19,7 @@ public interface UserRepository
      
     User save (User user);
     
-    void delete(int id);
+    boolean delete(int id);
     
     User getUserById(int id);
     

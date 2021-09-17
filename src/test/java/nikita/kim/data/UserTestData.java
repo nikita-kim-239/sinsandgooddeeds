@@ -17,4 +17,6 @@ public class UserTestData {
     public static final int NOT_FOUND = 10;
     public static final int USER1_ID = 100000;
     
+    public static final User user1 = new User(100000,"user1","ivan","0ef78b48343037bbdcf70abee62238b4"); 
+    
 }

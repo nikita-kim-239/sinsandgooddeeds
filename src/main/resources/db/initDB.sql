@@ -19,7 +19,7 @@ CREATE TABLE acts(
   sin              BOOLEAN                NOT NULL,
   acted            DATE                   NOT NULL,
   description      VARCHAR                NOT NULL,
-  user_id           INTEGER                NOT NULL,
+  user_id           INTEGER               NOT NULL,
   FOREIGN KEY (user_id) REFERENCES users (id) ON DELETE CASCADE
 );
 
@@ -29,6 +29,7 @@ CREATE TABLE votes(
   toheaven         BOOLEAN                NOT NULL,
   user_id          INTEGER                NOT NULL,
   target_user_id   INTEGER                NOT NULL,
+  actual           BOOLEAN                NOT NULL,
   FOREIGN KEY (user_id) REFERENCES users (id) ON DELETE CASCADE,
   FOREIGN KEY (target_user_id) REFERENCES users (id) ON DELETE CASCADE
 );

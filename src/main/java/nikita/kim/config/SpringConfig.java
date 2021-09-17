@@ -21,13 +21,6 @@ import org.springframework.jdbc.datasource.DriverManagerDataSource;
 @ComponentScan("nikita.kim")
 public class SpringConfig {
     
-//    @Value("classpath:db/initDB.sql")
-//    private Resource initDB;
-//
-//
-//
-//    @Value("classpath:db/populateDB.sql")
-//    private Resource populateDB;
     
     
   
@@ -46,13 +39,7 @@ public class SpringConfig {
     }
     
     
-//    private DatabasePopulator createDatabasePopulator() {
-//        ResourceDatabasePopulator databasePopulator = new ResourceDatabasePopulator();
-//        databasePopulator.setContinueOnError(true);
-//        databasePopulator.addScript(new ClassPathResource("db/initDB.sql"));
-//        databasePopulator.addScript(new ClassPathResource("db/populateDB.sql"));
-//        return databasePopulator;
-//    }
+
 
     
     

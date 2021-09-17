@@ -1,0 +1,3 @@
+DELETE FROM votes;
+DELETE FROM acts;
+DELETE FROM users;

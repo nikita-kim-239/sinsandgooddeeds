@@ -62,7 +62,7 @@ public class UserServlet extends HttpServlet{
             
             
             req.setCharacterEncoding("UTF-8");
-            List <User> users = userRepository.getAll().stream().filter(u->u.getId()!=SecurityUtil.getCurrentUser()).collect(Collectors.toList());
+            List <User> users = userRepository.getAll().stream().filter(u->!u.getId().equals(SecurityUtil.getCurrentUser())).collect(Collectors.toList());
             
             req.setAttribute("users",users);
             ServletContext servletContext = getServletContext();

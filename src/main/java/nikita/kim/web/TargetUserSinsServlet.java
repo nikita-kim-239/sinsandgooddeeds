@@ -22,6 +22,7 @@ import nikita.kim.model.Act;
 import nikita.kim.model.Vote;
 import nikita.kim.repository.ActRepository;
 import nikita.kim.repository.VoteRepository;
+import nikita.kim.service.VoteService;
 import nikita.kim.util.SecurityUtil;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 
@@ -32,7 +33,7 @@ public class TargetUserSinsServlet extends HttpServlet{
     
     
     private Integer targetUserId;
-    private VoteRepository voteRepository;
+    private VoteService voteService;
     private ActRepository actRepository;
     private  AnnotationConfigApplicationContext context;
     
@@ -40,7 +41,7 @@ public class TargetUserSinsServlet extends HttpServlet{
     public void init()
         {
             context=new AnnotationConfigApplicationContext(SpringConfig.class);
-            voteRepository= context.getBean(VoteRepository.class);
+            voteService= context.getBean(VoteService.class);
             actRepository=context.getBean(ActRepository.class);
             
         }
@@ -94,7 +95,7 @@ public class TargetUserSinsServlet extends HttpServlet{
             if (vote.equals("hell")) 
                 heaven=false;
             
-            voteRepository.save(new Vote(timeOfVote,heaven,SecurityUtil.getCurrentUser(),targetUserId));
+            voteService.vote(new Vote(timeOfVote,heaven,SecurityUtil.getCurrentUser(),targetUserId));
             resp.sendRedirect(req.getContextPath()+"/userPage");
                 }    
         }

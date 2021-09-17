@@ -11,5 +11,7 @@ public interface VoteRepository {
     
     
     Vote save(Vote vote);
+     
+    void removeOldVote(int userId,int targetUserId);
     
 }
