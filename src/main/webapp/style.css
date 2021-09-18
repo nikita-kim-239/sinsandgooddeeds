@@ -1,3 +1,8 @@
+body{
+    
+    background:url(images/images.jpg) no-repeat;
+    background-size:100%;
+}
 form{
     
     margin-left:40%;
@@ -6,7 +11,7 @@ form{
     
 }
 
-a,h1,table{
+.center{
     
     
     margin-left:40%;

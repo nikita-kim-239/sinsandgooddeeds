@@ -6,7 +6,6 @@
 package nikita.kim.web;
 
 import java.io.IOException;
-import java.util.List;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
@@ -15,8 +14,8 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import nikita.kim.config.SpringConfig;
-import nikita.kim.model.User;
-import nikita.kim.repository.UserRepository;
+import nikita.kim.service.UserService;
+import org.apache.log4j.Logger;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 
 
@@ -25,17 +24,17 @@ import org.springframework.context.annotation.AnnotationConfigApplicationContext
 public class RegisterServlet extends HttpServlet{
     
 
+    private static final Logger log = Logger.getLogger(LoginServlet.class); 
     
     
-    
-    private UserRepository userRepository;
+    private UserService userService;
     private  AnnotationConfigApplicationContext context;
     
     @Override
     public void init()
         {
             context=new AnnotationConfigApplicationContext(SpringConfig.class);
-            userRepository= context.getBean(UserRepository.class);
+            userService= context.getBean(UserService.class);
             
         }
     
@@ -64,23 +63,16 @@ public class RegisterServlet extends HttpServlet{
             String login=req.getParameter("login").trim();
             String password=req.getParameter("password").trim();
             
-            List<String> logins=userRepository.getLogins();
-            List<String> names=userRepository.getNames();
+            
  
-            if ((!logins.contains(login))&&(!names.contains(name)))
-                {
-                    
-                    User user=new User();
-                    user.setName(name);
-                    user.setLogin(login);
-                    user.setPassword(password);
-                    userRepository.save(user);
-                    resp.sendRedirect(req.getContextPath()+"/login");
-                    
+            if (userService.register(name,login,password))
+                {   
+                    log.info("user with name "+name+" has been created succesfully");
+                    resp.sendRedirect(req.getContextPath()+"/login");                    
                 }
             else
                 {
-                    System.out.println("Bad credentials");
+                    log.info(name+" "+login+" "+password+" are bad credentials");
                     resp.sendRedirect(req.getContextPath()+"/register");
                 }
                     

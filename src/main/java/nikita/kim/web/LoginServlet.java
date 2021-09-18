@@ -7,8 +7,6 @@ package nikita.kim.web;
 
 import java.io.IOException;
 import static java.nio.charset.StandardCharsets.UTF_8;
-import java.sql.Connection;
-
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletContext;
 import javax.servlet.ServletException;

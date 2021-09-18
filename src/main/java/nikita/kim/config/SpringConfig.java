@@ -18,7 +18,7 @@ import org.springframework.jdbc.datasource.DriverManagerDataSource;
 
 
 @Configuration
-@ComponentScan("nikita.kim")
+@ComponentScan({"nikita.kim.repository.jdbc","nikita.kim.service"})
 public class SpringConfig {
     
     

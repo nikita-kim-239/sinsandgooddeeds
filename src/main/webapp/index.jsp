@@ -18,7 +18,7 @@
         <button type="submit">Зайти</button>
     </form>
     <br/>
-    <a href="register">Зарегистрироваться</a>
+    <a class="center" href="register">Зарегистрироваться</a>
     
 </body>
 </html>

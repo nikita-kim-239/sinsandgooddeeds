@@ -8,11 +8,14 @@ package nikita.kim.repository.jdbc;
 import static java.nio.charset.StandardCharsets.UTF_8;
 import static junit.framework.TestCase.assertEquals;
 import nikita.kim.config.SpringConfig;
+import static nikita.kim.data.UserTestData.NEW_USER_ID;
 import static nikita.kim.data.UserTestData.NOT_FOUND;
 import static nikita.kim.data.UserTestData.USER1_ID;
+import static nikita.kim.data.UserTestData.newUser;
 import static nikita.kim.data.UserTestData.user1;
 import nikita.kim.repository.UserRepository;
 import org.junit.After;
+import static org.junit.Assert.assertNotNull;
 
 import static org.junit.Assert.assertNull;
 import org.junit.Before;
@@ -57,6 +60,14 @@ public class JdbcUserRepositoryTest {
         }
     
     
+    
+    @Test
+    public void save()
+        {
+            assertEquals(newUser,userRepository.save(newUser));
+            assertNotNull(userRepository.getUserById(NEW_USER_ID));
+            assertEquals(newUser,userRepository.getUserById(NEW_USER_ID));
+        }
     
     
     @Test

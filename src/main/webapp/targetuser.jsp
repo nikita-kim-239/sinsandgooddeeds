@@ -7,11 +7,12 @@
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <title>JSP Page</title>
+        <title>Голосовать</title>
+        <link rel="stylesheet" href="style.css">
     </head>
     <body>
         
-        <table border="1" cellpadding="5">
+        <table class="center" border="1" cellpadding="5">
             <caption><h2>Дела пользователя ${targetuser}</h2></caption>
             <tr>
                 <th>Дата</th>

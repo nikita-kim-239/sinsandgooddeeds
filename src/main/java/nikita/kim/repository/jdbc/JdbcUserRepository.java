@@ -31,7 +31,7 @@ public class JdbcUserRepository implements UserRepository{
     private static final String JDBC_PASSWORD="postgres";
     private static final String JDBC_URL="jdbc:postgresql://localhost:5432/sagd?characterEncoding=UTF-8";
     private static final String SELECT_USERS_QUERY="select distinct U.id,U.nick,U.login,U.password,(Select count(*) from votes where target_user_id=U.id and toheaven=true and actual=true group by target_user_id) as HeavenCount,(Select count(*) from votes where target_user_id=U.id and toheaven=false and actual=true group by target_user_id) as HellCount from users as U left join votes as V on U.id=V.target_user_id";
-    private static final String INSERT_USERS_QUERY="insert into users (name,login,password) values (?,?,?)";
+    private static final String INSERT_USERS_QUERY="insert into users (nick,login,password) values (?,?,?)";
     private static final String DELETE_USER_QUERY="delete from users where id=?";
     private static final String GET_BY_ID_QUERY="select * from users where id=?";
     private static final String SELECT_PASSORD_AND_LOGIN_QUERY="select login,password from users";

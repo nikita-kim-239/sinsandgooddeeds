@@ -19,11 +19,11 @@
     </head>
     <body>
         
-        <a href="create">Создать</a>
+        <a class="center" href="create">Создать</a>
         <br/>
-        <a href="logout">Выйти</a>
+        <a class="center" href="logout">Выйти</a>
         <br/>
-        <table border="1" cellpadding="5">
+        <table class="center" border="1" cellpadding="5">
             <caption><h2>Грехи</h2></caption>
             <tr>
                 <th>Дата</th>
@@ -38,7 +38,7 @@
                 </tr>
             </c:forEach>
         </table>
-        <a href="users">Пользователи</a>
+        <a class="center" href="users">Пользователи</a>
         
         
         

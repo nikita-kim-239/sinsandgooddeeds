@@ -45,6 +45,25 @@ public class UserService {
             return (users.containsKey(login))&&(users.get(login).equals(DigestUtils.md5Hex(password)));
         }
     
+    public boolean register(String name,String login,String password)
+        {
+            List<String> logins=userRepository.getLogins();
+            List<String> names=userRepository.getNames();
+            User user=new User();
+            user.setName(name);
+            user.setLogin(login);
+            user.setPassword(password);
+            user.setVotesToHeaven(0);
+            user.setVotesToHell(0);
+            if((!logins.contains(login))&&(!names.contains(name))&&(password.length()>2))
+                {  
+                    userRepository.save(user);
+                    return true;
+                }
+            else
+                return false;
+            
+        }
     
     public User get(int id)
         {

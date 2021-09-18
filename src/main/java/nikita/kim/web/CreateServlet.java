@@ -70,13 +70,7 @@ public class CreateServlet extends HttpServlet{
             String description=req.getParameter("description");
             LocalDate date =LocalDate.parse(req.getParameter("date"));
             Boolean isSin=(req.getParameter("sin").equals("true"))?true:false;
-            try {
-		Class.forName("org.postgresql.Driver");
-                } catch (ClassNotFoundException e) {
-		System.out.println("PostgreSQL JDBC Driver is not found. Include it in your library path ");
-		e.printStackTrace();
-		return;
-            }  
+            
             actRepository.save(new Act(isSin,date,description),SecurityUtil.getCurrentUser());
             resp.sendRedirect(req.getContextPath()+"/userPage");
         }
