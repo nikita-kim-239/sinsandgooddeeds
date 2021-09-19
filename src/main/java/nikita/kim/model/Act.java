@@ -19,7 +19,7 @@ public class Act implements Serializable{
     
     private Boolean sin;
     
-    private LocalDate date;
+    private LocalDate acted;
     
     private String description;
     
@@ -27,18 +27,18 @@ public class Act implements Serializable{
         {
         }
             
-    public Act(Boolean sin,LocalDate date,String description)
+    public Act(Boolean sin,LocalDate acted,String description)
         {   
             this.sin=sin;
-            this.date=date;
+            this.acted=acted;
             this.description=description;
         }
     
-    public Act(Integer id,Boolean sin,LocalDate date,String description)
+    public Act(Integer id,Boolean sin,LocalDate acted,String description)
         {
             this.id=id;
             this.sin=sin;
-            this.date=date;
+            this.acted=acted;
             this.description=description;
         }
 
@@ -62,16 +62,7 @@ public class Act implements Serializable{
     /**
      * @return the date
      */
-    public LocalDate getDate() {
-        return date;
-    }
-
-    /**
-     * @param date the date to set
-     */
-    public void setDate(LocalDate date) {
-        this.date = date;
-    }
+   
 
   
     public String getDescription() {
@@ -99,11 +90,30 @@ public class Act implements Serializable{
         this.sin = sin;
     }
     
+    public boolean isNew()
+        {
+            return id==null;
+        }
+    
     
     @Override
     public String toString()
         {
-            return "{Id: "+id+" Sin "+sin+" Date "+date+" Description "+description+" }";
+            return "{Id: "+id+" Sin "+sin+" Acted "+acted+" Description "+description+" }";
         }
+
+    /**
+     * @return the acted
+     */
+    public LocalDate getActed() {
+        return acted;
+    }
+
+    /**
+     * @param acted the acted to set
+     */
+    public void setActed(LocalDate acted) {
+        this.acted = acted;
+    }
     
 }

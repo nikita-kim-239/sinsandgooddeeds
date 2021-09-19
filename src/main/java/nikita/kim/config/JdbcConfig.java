@@ -5,23 +5,14 @@
  */
 package nikita.kim.config;
 
-
-
-
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
-
 import org.springframework.jdbc.datasource.DriverManagerDataSource;
 
-
-
-
 @Configuration
-@ComponentScan({"nikita.kim.repository.springjdbc","nikita.kim.service"})
-public class SpringConfig {
+@ComponentScan({"nikita.kim.repository.jdbc","nikita.kim.service"})
+public class JdbcConfig {
     
     
     
@@ -41,17 +32,9 @@ public class SpringConfig {
     }
     
     
-    @Bean
-    public JdbcTemplate getJdbcTemplate()
-        {
-            return new JdbcTemplate(getDataSource());
-        }
     
-    @Bean
-    public NamedParameterJdbcTemplate getNamedParameterJdbcTemplate()
-        {
-            return new NamedParameterJdbcTemplate(getDataSource());
-        }
+    
+
 
     
     

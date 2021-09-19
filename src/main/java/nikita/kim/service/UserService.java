@@ -52,7 +52,7 @@ public class UserService {
             User user=new User();
             user.setName(name);
             user.setLogin(login);
-            user.setPassword(password);
+            user.setPassword(DigestUtils.md5Hex(password));
             user.setVotesToHeaven(0);
             user.setVotesToHell(0);
             if((!logins.contains(login))&&(!names.contains(name))&&(password.length()>2))

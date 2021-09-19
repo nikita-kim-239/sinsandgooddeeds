@@ -22,7 +22,7 @@
             <jsp:useBean id="act" class="nikita.kim.model.Act" scope="request"/>
                 <tr class="${act.sin ? 'hell':'heaven'}">
 
-                    <td><c:out value="${act.date}"/></td>       
+                    <td><c:out value="${act.acted}"/></td>       
                     <td><c:out value="${act.description}"/></td>
                 </tr>
             </c:forEach>

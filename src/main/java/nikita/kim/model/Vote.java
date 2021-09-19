@@ -24,6 +24,8 @@ public class Vote {
     
     private boolean toHeaven;
     
+    private boolean actual;
+    
     
     public Vote (LocalDateTime dateTime,Boolean toHeaven,Integer votedUserId,Integer targetUserId)
         {
@@ -102,5 +104,25 @@ public class Vote {
     public void setToHeaven(boolean toHeaven) {
         this.toHeaven = toHeaven;
     }
+
+    /**
+     * @return the actual
+     */
+    public boolean isActual() {
+        return actual;
+    }
+
+    /**
+     * @param actual the actual to set
+     */
+    public void setActual(boolean actual) {
+        this.actual = actual;
+    }
+    
+    
+    public Boolean isNew()
+        {
+            return id==null;
+        }
     
 }

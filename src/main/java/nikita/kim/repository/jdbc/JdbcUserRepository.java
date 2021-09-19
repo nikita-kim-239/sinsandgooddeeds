@@ -36,7 +36,7 @@ public class JdbcUserRepository implements UserRepository{
     private static final String GET_BY_ID_QUERY="select * from users where id=?";
     private static final String SELECT_PASSORD_AND_LOGIN_QUERY="select login,password from users";
     private static final String SELECT_ID_AND_LOGIN_QUERY="select login,id from users";
-    private static final String SELECT_NAMES_QUERY="select name from users";
+    private static final String SELECT_NAMES_QUERY="select nick from users";
     private static final String SELECT_LOGINS_QUERY="select login from users";
     
     @Override
@@ -97,8 +97,7 @@ public class JdbcUserRepository implements UserRepository{
                                 user.setName(rs.getString("nick"));
                                 user.setLogin(rs.getString("login"));
                                 user.setPassword(rs.getString("password"));
-                                user.setVotesToHeaven(rs.getInt("heavencount"));
-                                user.setVotesToHell(rs.getInt("hellcount"));
+                                
                                 users.add(user);
                                         
                             }

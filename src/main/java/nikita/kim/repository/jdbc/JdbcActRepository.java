@@ -40,7 +40,7 @@ public class JdbcActRepository implements ActRepository{
                     connection=DriverManager.getConnection(JDBC_URL,JDBC_LOGIN,JDBC_PASSWORD);
                     PreparedStatement pstmt = connection.prepareStatement(INSERT_QUERY);
                     pstmt.setBoolean(1,act.getSin());
-                    pstmt.setObject(2,act.getDate());
+                    pstmt.setObject(2,act.getActed());
                     pstmt.setString(3,act.getDescription());                    
                     pstmt.setInt(4,userId);
                     pstmt.executeUpdate();
@@ -95,7 +95,7 @@ public class JdbcActRepository implements ActRepository{
                     {                        
                         
                         act.setId(rs.getInt("id"));
-                        act.setDate(rs.getObject(3,LocalDate.class));
+                        act.setActed(rs.getObject(3,LocalDate.class));
                         act.setSin(rs.getBoolean("sin"));
                         act.setDescription(rs.getString("description"));
                         
@@ -128,7 +128,7 @@ public class JdbcActRepository implements ActRepository{
                     {                        
                         Act act=new Act();
                         act.setId(rs.getInt("id"));
-                        act.setDate(rs.getObject(3,LocalDate.class));
+                        act.setActed(rs.getObject(3,LocalDate.class));
                         act.setSin(rs.getBoolean("sin"));
                         act.setDescription(rs.getString("description"));
                         acts.add(act);

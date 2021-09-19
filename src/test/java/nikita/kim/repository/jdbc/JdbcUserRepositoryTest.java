@@ -7,12 +7,16 @@ package nikita.kim.repository.jdbc;
 
 import static java.nio.charset.StandardCharsets.UTF_8;
 import static junit.framework.TestCase.assertEquals;
+import nikita.kim.config.JdbcConfig;
 import nikita.kim.config.SpringConfig;
 import static nikita.kim.data.UserTestData.NEW_USER_ID;
 import static nikita.kim.data.UserTestData.NOT_FOUND;
+import static nikita.kim.data.UserTestData.UPDATED_USER_ID;
 import static nikita.kim.data.UserTestData.USER1_ID;
 import static nikita.kim.data.UserTestData.newUser;
+import static nikita.kim.data.UserTestData.updated_user1;
 import static nikita.kim.data.UserTestData.user1;
+import static nikita.kim.data.UserTestData.users;
 import nikita.kim.repository.UserRepository;
 import org.junit.After;
 import static org.junit.Assert.assertNotNull;
@@ -40,7 +44,7 @@ public class JdbcUserRepositoryTest {
     @Before
     public  void before()
         {
-             context=new AnnotationConfigApplicationContext(SpringConfig.class);
+             context=new AnnotationConfigApplicationContext(JdbcConfig.class);
              userRepository=context.getBean(JdbcUserRepository.class);
              dataSource=context.getBean(DriverManagerDataSource.class);
              ResourceDatabasePopulator tables = new ResourceDatabasePopulator();
@@ -62,11 +66,19 @@ public class JdbcUserRepositoryTest {
     
     
     @Test
-    public void save()
+    public void create()
         {
             assertEquals(newUser,userRepository.save(newUser));
             assertNotNull(userRepository.getUserById(NEW_USER_ID));
             assertEquals(newUser,userRepository.getUserById(NEW_USER_ID));
+        }
+    
+    @Test
+    public void update()
+        {
+            assertEquals(updated_user1,userRepository.save(updated_user1));
+            assertNotNull(userRepository.getUserById(NEW_USER_ID));
+            assertEquals(updated_user1,userRepository.getUserById(UPDATED_USER_ID));
         }
     
     
@@ -88,5 +100,19 @@ public class JdbcUserRepositoryTest {
         {
             assertEquals(user1,userRepository.getUserById(USER1_ID));
         }
+    
+    @Test
+    public void getNotFound()
+        {
+            assertNull(userRepository.getUserById(NOT_FOUND));
+        }
+    
+    
+    @Test 
+    public void getAll()
+        {
+            assertEquals(users,userRepository.getAll());
+        }    
+            
     
 }

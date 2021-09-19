@@ -25,7 +25,7 @@ CREATE TABLE acts(
 
 CREATE TABLE votes(
   id               INTEGER PRIMARY KEY DEFAULT nextval('global_seq'),
-  time_of_vote     TIME                   NOT NULL,
+  time_of_vote     TIMESTAMP              NOT NULL,
   toheaven         BOOLEAN                NOT NULL,
   user_id          INTEGER                NOT NULL,
   target_user_id   INTEGER                NOT NULL,
