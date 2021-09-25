@@ -12,20 +12,42 @@ package nikita.kim.util;
 public class SecurityUtil {
     
     private static Integer currentUser;
-
-    /**
-     * @return the currentUser
-     */
+    
+    private static Integer votesToHeaven;
+    
+    private static Integer votesToHell;
+    
+   
     public static Integer getCurrentUser() {
         return currentUser;
     }
 
-    /**
-     * @param currentUser the currentUser to set
-     */
+    
     public static void setCurrentUser(Integer currentUser) {
         SecurityUtil.currentUser = currentUser;
     }
+
+    
+    public static Integer getVotesToHeaven() {
+        return votesToHeaven;
+    }
+
+    
+    public static void setVotesToHeaven(Integer votesToHeaven) {
+        SecurityUtil.votesToHeaven = votesToHeaven;
+    }
+
+    
+   
+    public static Integer getVotesToHell() {
+        return votesToHell;
+    }
+
+    
+    public static void setVotesToHell(Integer votesToHell) {
+        SecurityUtil.votesToHell = votesToHell;
+    }
+    
     
     
     

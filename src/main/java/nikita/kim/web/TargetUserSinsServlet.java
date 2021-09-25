@@ -17,6 +17,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import nikita.kim.config.JpaConfig;
 import nikita.kim.config.SpringConfig;
 import nikita.kim.model.Act;
 import nikita.kim.model.Vote;
@@ -40,7 +41,7 @@ public class TargetUserSinsServlet extends HttpServlet{
     @Override
     public void init()
         {
-            context=new AnnotationConfigApplicationContext(SpringConfig.class);
+            context=new AnnotationConfigApplicationContext(JpaConfig.class);
             voteService= context.getBean(VoteService.class);
             actRepository=context.getBean(ActRepository.class);
             
@@ -95,7 +96,7 @@ public class TargetUserSinsServlet extends HttpServlet{
             if (vote.equals("hell")) 
                 heaven=false;
             
-            voteService.vote(new Vote(timeOfVote,heaven,SecurityUtil.getCurrentUser(),targetUserId));
+            voteService.vote(new Vote(timeOfVote,heaven,SecurityUtil.getCurrentUser(),targetUserId,true));
             resp.sendRedirect(req.getContextPath()+"/userPage");
                 }    
         }

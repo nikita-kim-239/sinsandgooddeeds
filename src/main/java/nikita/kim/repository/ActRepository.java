@@ -14,11 +14,13 @@ import nikita.kim.model.Act;
  */
 public interface ActRepository {
     
-    Act save(Act act,int userId);
+    boolean create(Act act,Integer userId);
     
+    boolean update(Act act,Integer userId);
+
     boolean delete(int id,int userId);
     
-    Act get(int id,int userId);
+    Act get(Integer id,Integer userId);
     
     List <Act> getAll(int userId);
     

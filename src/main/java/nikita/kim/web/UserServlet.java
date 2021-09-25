@@ -15,9 +15,11 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import nikita.kim.config.JpaConfig;
 import nikita.kim.config.SpringConfig;
 import nikita.kim.model.User;
 import nikita.kim.repository.UserRepository;
+import nikita.kim.service.UserService;
 import nikita.kim.util.SecurityUtil;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 
@@ -29,14 +31,14 @@ public class UserServlet extends HttpServlet{
     
     
     
-    private UserRepository userRepository;
+    private UserService userService;
     private  AnnotationConfigApplicationContext context;
     
     @Override
     public void init()
         {
-            context=new AnnotationConfigApplicationContext(SpringConfig.class);
-            userRepository= context.getBean(UserRepository.class);
+            context=new AnnotationConfigApplicationContext(JpaConfig.class);
+            userService= context.getBean(UserService.class);
             
         }
     
@@ -62,7 +64,7 @@ public class UserServlet extends HttpServlet{
             
             
             req.setCharacterEncoding("UTF-8");
-            List <User> users = userRepository.getAll().stream().filter(u->!u.getId().equals(SecurityUtil.getCurrentUser())).collect(Collectors.toList());
+            List <User> users = userService.getAll().stream().filter(u->!u.getId().equals(SecurityUtil.getCurrentUser())).collect(Collectors.toList());
             
             req.setAttribute("users",users);
             ServletContext servletContext = getServletContext();

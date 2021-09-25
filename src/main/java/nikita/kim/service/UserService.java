@@ -7,12 +7,15 @@ package nikita.kim.service;
 
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 import nikita.kim.model.User;
 import nikita.kim.repository.UserRepository;
+import nikita.kim.repository.VoteRepository;
 import nikita.kim.util.SecurityUtil;
 import org.apache.commons.codec.digest.DigestUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 
 @Service
@@ -21,9 +24,12 @@ public class UserService {
     @Autowired
     private UserRepository userRepository;
     
-    public User create(User user)
+    @Autowired
+    private VoteRepository voteRepository;
+    
+    public boolean create(User user)
         {
-            return userRepository.save(user);
+            return userRepository.create(user.getName(),user.getLogin(),user.getPassword());
         }
     
     public void delete(int id)
@@ -38,27 +44,30 @@ public class UserService {
     
     
     public boolean autorize(String login,String password)
-        {
-            Map<String,String> users=userRepository.getLoginsAndPasswords();
-            Map<String,Integer> userIds=userRepository.getLoginsAndIds();
+        {   
+            
+            
+            List <User> users=userRepository.getAll();
+            Map<String,String> loginsAndPasswords=getLoginsAndPasswords(users);
+            Map<String,Integer> userIds=getLoginsAndIds(users);
             SecurityUtil.setCurrentUser(userIds.get(login));
-            return (users.containsKey(login))&&(users.get(login).equals(DigestUtils.md5Hex(password)));
+            SecurityUtil.setVotesToHeaven(voteRepository.votesToHeaven( SecurityUtil.getCurrentUser()));
+            SecurityUtil.setVotesToHell(voteRepository.votesToHell(userIds.get(login)));
+            return (loginsAndPasswords.containsKey(login))&&(loginsAndPasswords.get(login).equals(DigestUtils.md5Hex(password)));
         }
     
+    @Transactional
     public boolean register(String name,String login,String password)
         {
-            List<String> logins=userRepository.getLogins();
-            List<String> names=userRepository.getNames();
-            User user=new User();
-            user.setName(name);
-            user.setLogin(login);
-            user.setPassword(DigestUtils.md5Hex(password));
-            user.setVotesToHeaven(0);
-            user.setVotesToHell(0);
+            List <User> users=userRepository.getAll();
+            List<String> logins=getLogins(users);
+            List<String> names=getNames(users);
+            
+            
             if((!logins.contains(login))&&(!names.contains(name))&&(password.length()>2))
                 {  
-                    userRepository.save(user);
-                    return true;
+                    return userRepository.create(name,login,DigestUtils.md5Hex(password));
+                    
                 }
             else
                 return false;
@@ -68,5 +77,30 @@ public class UserService {
     public User get(int id)
         {
             return userRepository.getUserById(id);
+        }
+    
+    public List<String> getLogins(List<User> users)
+        {
+            
+            return users.stream().map(u->u.getLogin()).collect(Collectors.toList());
+            
+        }
+    
+    public List<String> getNames(List<User> users)
+        {
+            
+            return users.stream().map(u->u.getName()).collect(Collectors.toList());
+            
+        }
+    
+    public Map<String,String> getLoginsAndPasswords(List<User> users)
+        {
+            return users.stream().collect(Collectors.toMap(User::getLogin,User::getPassword));
+        }
+    
+    
+    public Map<String,Integer> getLoginsAndIds(List<User> users)
+        {
+            return users.stream().collect(Collectors.toMap(User::getLogin,User::getId));
         }
 }

@@ -13,6 +13,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import nikita.kim.config.JpaConfig;
 import nikita.kim.config.SpringConfig;
 import nikita.kim.service.UserService;
 import org.apache.log4j.Logger;
@@ -33,7 +34,7 @@ public class RegisterServlet extends HttpServlet{
     @Override
     public void init()
         {
-            context=new AnnotationConfigApplicationContext(SpringConfig.class);
+            context=new AnnotationConfigApplicationContext(JpaConfig.class);
             userService= context.getBean(UserService.class);
             
         }

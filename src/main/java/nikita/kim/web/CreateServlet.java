@@ -14,9 +14,11 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import nikita.kim.config.JpaConfig;
 import nikita.kim.config.SpringConfig;
 import nikita.kim.model.Act;
 import nikita.kim.repository.ActRepository;
+import nikita.kim.service.ActService;
 import nikita.kim.util.SecurityUtil;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 
@@ -26,14 +28,14 @@ import org.springframework.context.annotation.AnnotationConfigApplicationContext
 public class CreateServlet extends HttpServlet{
     
     
-    private ActRepository actRepository;
+    private ActService actService;
     private  AnnotationConfigApplicationContext context;
     
     @Override
     public void init()
         {
-            context=new AnnotationConfigApplicationContext(SpringConfig.class);
-            actRepository= context.getBean(ActRepository.class);
+            context=new AnnotationConfigApplicationContext(JpaConfig.class);
+            actService= context.getBean(ActService.class);
             
         }
     
@@ -71,7 +73,7 @@ public class CreateServlet extends HttpServlet{
             LocalDate date =LocalDate.parse(req.getParameter("date"));
             Boolean isSin=(req.getParameter("sin").equals("true"))?true:false;
             
-            actRepository.save(new Act(isSin,date,description),SecurityUtil.getCurrentUser());
+            actService.create(new Act(isSin,date,description),SecurityUtil.getCurrentUser());
             resp.sendRedirect(req.getContextPath()+"/userPage");
         }
  

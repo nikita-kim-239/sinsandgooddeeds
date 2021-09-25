@@ -14,6 +14,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import nikita.kim.config.JpaConfig;
 import nikita.kim.config.SpringConfig;
 import nikita.kim.model.Act;
 import nikita.kim.repository.ActRepository;
@@ -30,10 +31,7 @@ public class UserPageServlet extends HttpServlet{
     
     
     
-    private static final String JDBC_LOGIN="postgres";
-    private static final String JDBC_PASSWORD="postgres";
-    private static final String JDBC_URL="jdbc:postgresql://localhost:5432/sinsandgooddeeds";
-    private static final String SELECT_SINS_QUERY="select * from acts where userid=?";
+    
     
     private ActRepository actRepository;
     private  AnnotationConfigApplicationContext context;
@@ -41,7 +39,7 @@ public class UserPageServlet extends HttpServlet{
     @Override
     public void init()
         {
-            context=new AnnotationConfigApplicationContext(SpringConfig.class);
+            context=new AnnotationConfigApplicationContext(JpaConfig.class);
             actRepository= context.getBean(ActRepository.class);
             
         }
@@ -73,7 +71,8 @@ public class UserPageServlet extends HttpServlet{
             List <Act> acts = actRepository.getAll(SecurityUtil.getCurrentUser());
            
             req.setAttribute("acts",acts);
-            
+            req.setAttribute("votesToHeaven",SecurityUtil.getVotesToHeaven());
+            req.setAttribute("votesToHell",SecurityUtil.getVotesToHell());
             ServletContext servletContext = getServletContext();
             RequestDispatcher requestDispatcher = servletContext.getRequestDispatcher("/userPage.jsp");         
             requestDispatcher.forward(req, resp);

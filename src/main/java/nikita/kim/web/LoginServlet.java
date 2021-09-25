@@ -15,6 +15,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import nikita.kim.config.JpaConfig;
 import nikita.kim.config.SpringConfig;
 import nikita.kim.service.UserService;
 
@@ -43,7 +44,7 @@ public class LoginServlet extends HttpServlet{
     @Override
     public void init()
         {
-            context=new AnnotationConfigApplicationContext(SpringConfig.class);
+            context=new AnnotationConfigApplicationContext(JpaConfig.class);
             userService= context.getBean(UserService.class);
             dataSource=context.getBean(DriverManagerDataSource.class);
             ResourceDatabasePopulator tables = new ResourceDatabasePopulator();

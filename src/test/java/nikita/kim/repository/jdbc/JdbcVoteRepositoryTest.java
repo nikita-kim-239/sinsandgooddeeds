@@ -5,30 +5,20 @@
  */
 package nikita.kim.repository.jdbc;
 
-import org.junit.Test;
-import static org.junit.Assert.*;
+import nikita.kim.config.JdbcConfig;
+import nikita.kim.data.AbstractVoteRepositoryTest;
+import org.junit.BeforeClass;
+import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 
-/**
- *
- * @author Никита
- */
-public class JdbcVoteRepositoryTest {
+
+
+public class JdbcVoteRepositoryTest extends AbstractVoteRepositoryTest{
     
-    public JdbcVoteRepositoryTest() {
-    }
-
-    /**
-     * Test of save method, of class JdbcVoteRepository.
-     */
-    @Test
-    public void testSave() {
-    }
-
-    /**
-     * Test of removeOldVote method, of class JdbcVoteRepository.
-     */
-    @Test
-    public void testRemoveOldVote() {
-    }
+    @BeforeClass
+    public static void beforeClass()
+        {
+            context=new AnnotationConfigApplicationContext(JdbcConfig.class);
+            voteRepository=context.getBean(JdbcVoteRepository.class);
+        }
     
 }

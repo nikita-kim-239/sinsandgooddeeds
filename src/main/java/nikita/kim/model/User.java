@@ -6,170 +6,120 @@
 package nikita.kim.model;
 
 import java.util.List;
+import javax.persistence.*;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 
-/**
- *
- * @author Никита
- */
-public class User {
+
+@NamedQueries({
+        @NamedQuery(name = "User.Delete", query = "DELETE FROM User u WHERE u.id=:id"),
+        @NamedQuery(name = "User.GetById", query = "SELECT u FROM User u where u.id=?1"),
+        @NamedQuery(name = "User.GetAll", query = "SELECT u FROM User u"),
+})
+@Entity
+@Table(name = "users", schema = "public")
+public class User extends AbstractNamedEntity{
     
     
-    private Integer id;
-    
-    private String name;
-    
+
+    @Column(name = "login", nullable = false)
+    @NotBlank
+    @Size(min = 5, max = 100)
     private String login;
     
+    
+    @Column(name = "password", nullable = false)
+    @NotBlank
+    @Size(min = 5, max = 100)
     private String password;
     
+    
+    @OneToMany(targetEntity=Act.class,fetch=FetchType.EAGER,mappedBy="user", orphanRemoval = true)
     private List<Act> acts;
-    
-    private Integer votesToHeaven;
-    
-    private Integer votesToHell;
-    
-  
 
-    
+
+
+
     public User()
         {
         }   
     
     public User(Integer id,String name,String login,String password)
         {
-            this.id=id;
-            this.name=name;
+            super(id,name);
             this.login=login;
             this.password=password;
         }
             
     
-    /**
-     * @return the id
-     */
+    
     public Integer getId() {
         return id;
     }
 
-    /**
-     * @param id the id to set
-     */
+    
     public void setId(Integer id) {
         this.id = id;
     }
 
-    /**
-     * @return the name
-     */
+    
     public String getName() {
         return name;
     }
 
-    /**
-     * @param name the name to set
-     */
+    
     public void setName(String name) {
         this.name = name;
     }
 
-    /**
-     * @return the login
-     */
+    
     public String getLogin() {
         return login;
     }
 
-    /**
-     * @param login the login to set
-     */
+    
     public void setLogin(String login) {
         this.login = login;
     }
 
-    /**
-     * @return the password
-     */
+    
     public String getPassword() {
         return password;
     }
 
-    /**
-     * @param password the password to set
-     */
+    
     public void setPassword(String password) {
         this.password = password;
     }
 
-    /**
-     * @return the acts
-     */
-    public List<Act> getActs() {
-        return acts;
-    }
-
-    /**
-     * @param acts the acts to set
-     */
-    public void setActs(List<Act> acts) {
-        this.acts = acts;
-    }
-
-    /**
-     * @return the votesToHeaven
-     */
     
-    public Boolean isNew()
-        {
-            return id==null;
-        }
+   
     
-    @Override
-    public boolean equals(Object o)
-        {   
-            
-            if (o == this) {
-            return true;
-            }
-             if (!(o instanceof User)) {
-            return false;
-            }
-             
-            User u=(User)o; 
-            return id.equals(u.getId())&&name.equals(u.getName())&&login.equals(u.getLogin())&&password.equals(u.getPassword());
-        }
+   
+    
+   
     
     @Override
     public String toString()
         {
-            return "User with id="+id+", name="+name+", login="+login+", password="+password+".";
+            return "User with id="+id+
+                    ", name="+name+
+                    ", login="+login+
+                    ", password="
+                    +password+".";
         }
 
-    /**
-     * @return the votesToHeaven
-     */
-    public Integer getVotesToHeaven() {
-        return votesToHeaven;
+    
+    public List<Act> getActs() {
+        return acts;
     }
 
-    /**
-     * @param votesToHeaven the votesToHeaven to set
-     */
-    public void setVotesToHeaven(Integer votesToHeaven) {
-        this.votesToHeaven = votesToHeaven;
+
+    public void setActs(List<Act> acts) {
+        this.acts = acts;
     }
 
-    /**
-     * @return the votesToHell
-     */
-    public Integer getVotesToHell() {
-        return votesToHell;
-    }
-
-    /**
-     * @param votesToHell the votesToHell to set
-     */
-    public void setVotesToHell(Integer votesToHell) {
-        this.votesToHell = votesToHell;
-    }
+    
     
 }

@@ -14,4 +14,8 @@ public interface VoteRepository {
      
     void removeOldVote(int userId,int targetUserId);
     
+    Integer votesToHeaven(int userId);
+    
+    Integer votesToHell(int userId);
+    
 }

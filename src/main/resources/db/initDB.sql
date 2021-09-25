@@ -1,11 +1,11 @@
-DROP TABLE IF EXISTS votes;
-DROP TABLE IF EXISTS acts;
-DROP TABLE IF EXISTS users;
+DROP TABLE IF EXISTS votes CASCADE;
+DROP TABLE IF EXISTS acts CASCADE;
+DROP TABLE IF EXISTS users CASCADE;
 DROP SEQUENCE IF EXISTS global_seq;
 CREATE SEQUENCE global_seq START WITH 100000;
 
 
-CREATE TABLE users
+CREATE TABLE public.users
 (
   id               INTEGER PRIMARY KEY DEFAULT nextval('global_seq'),
   nick             VARCHAR                 NOT NULL,
@@ -14,7 +14,7 @@ CREATE TABLE users
 );
 
 
-CREATE TABLE acts(
+CREATE TABLE public.acts(
   id               INTEGER PRIMARY KEY DEFAULT nextval('global_seq'),
   sin              BOOLEAN                NOT NULL,
   acted            DATE                   NOT NULL,
@@ -23,7 +23,7 @@ CREATE TABLE acts(
   FOREIGN KEY (user_id) REFERENCES users (id) ON DELETE CASCADE
 );
 
-CREATE TABLE votes(
+CREATE TABLE public.votes(
   id               INTEGER PRIMARY KEY DEFAULT nextval('global_seq'),
   time_of_vote     TIMESTAMP              NOT NULL,
   toheaven         BOOLEAN                NOT NULL,

@@ -16,8 +16,12 @@ import nikita.kim.model.User;
  */
 public interface UserRepository 
 {
-     
-    User save (User user);
+    
+    
+    
+    boolean create (String name,String login,String password);
+    
+    boolean update(User user);
     
     boolean delete(int id);
     
@@ -25,12 +29,6 @@ public interface UserRepository
     
     List<User> getAll();
     
-    Map <String,String> getLoginsAndPasswords();
-    
-    Map <String,Integer> getLoginsAndIds();
-    
-    List <String> getNames();
-    
-    List <String> getLogins();
+   
     
 }

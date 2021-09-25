@@ -26,7 +26,7 @@ import org.springframework.stereotype.Repository;
 @Repository
 public class JdbcUserRepository implements UserRepository{
 
-    private static final Logger log = Logger.getLogger(LoginServlet.class);
+    
     private static final String JDBC_LOGIN="postgres";
     private static final String JDBC_PASSWORD="postgres";
     private static final String JDBC_URL="jdbc:postgresql://localhost:5432/sagd?characterEncoding=UTF-8";
@@ -34,32 +34,57 @@ public class JdbcUserRepository implements UserRepository{
     private static final String INSERT_USERS_QUERY="insert into users (nick,login,password) values (?,?,?)";
     private static final String DELETE_USER_QUERY="delete from users where id=?";
     private static final String GET_BY_ID_QUERY="select * from users where id=?";
-    private static final String SELECT_PASSORD_AND_LOGIN_QUERY="select login,password from users";
-    private static final String SELECT_ID_AND_LOGIN_QUERY="select login,id from users";
-    private static final String SELECT_NAMES_QUERY="select nick from users";
-    private static final String SELECT_LOGINS_QUERY="select login from users";
+    private static final String UPDATE_USERS_QUERY="update users set nick=?,login=?,password=? where id=?";
+    
+    
     
     @Override
-    public User save(User user) {
+    public boolean create(String name,String login,String password) {
         
-        
+        int rows=0;
         Connection connection=null;
+        
         
         try{
                         connection=DriverManager.getConnection(JDBC_URL,JDBC_LOGIN,JDBC_PASSWORD);
                         PreparedStatement pstmt = connection.prepareStatement(INSERT_USERS_QUERY);
-                        pstmt.setString(1,user.getName());
-                        pstmt.setString(2,user.getLogin());
-                        pstmt.setString(3,user.getPassword());
-                        pstmt.executeUpdate();
+                        pstmt.setString(1,name);
+                        pstmt.setString(2,login);
+                        pstmt.setString(3,password);
+                        rows=pstmt.executeUpdate();
                         
                         }
                         catch(SQLException ex)
                         {
                             ex.printStackTrace();
                         }
-        return user;
         
+        return (rows!=0)?true:false;
+        
+    }
+    
+    @Override
+    public boolean update(User user) {
+        int rows=0;
+        Connection connection=null;
+        
+        
+        try{
+                        connection=DriverManager.getConnection(JDBC_URL,JDBC_LOGIN,JDBC_PASSWORD);
+                        PreparedStatement pstmt = connection.prepareStatement(UPDATE_USERS_QUERY);
+                        pstmt.setString(1,user.getName());
+                        pstmt.setString(2,user.getLogin());
+                        pstmt.setString(3,user.getPassword());
+                        pstmt.setInt(4,user.getId());
+                        rows=pstmt.executeUpdate();
+                        
+                        }
+                        catch(SQLException ex)
+                        {
+                            ex.printStackTrace();
+                        }
+        
+        return (rows!=0)?true:false;
     }
 
     @Override
@@ -147,100 +172,8 @@ public class JdbcUserRepository implements UserRepository{
         return user;
     }
 
-    @Override
-    public Map<String, String> getLoginsAndPasswords() {
-        Map <String,String> logins = new HashMap<>();
-        
-        Connection connection=null;
-        try{
-                        connection=DriverManager.getConnection(JDBC_URL,JDBC_LOGIN,JDBC_PASSWORD);
-                        Statement stmt = connection.createStatement();
-                        ResultSet rs=stmt.executeQuery(SELECT_PASSORD_AND_LOGIN_QUERY);
-                        while(rs.next())
-                            {                        
-                                String login=rs.getString("login");
-                                String password=rs.getString("password");
-                                logins.put(login,password);
-                                        
-                            }
-                        }
-                        catch(SQLException ex)
-                        {
-                            ex.printStackTrace();
-                        }
-            
-        return logins;
-    }
+    
 
-    @Override
-    public Map<String, Integer> getLoginsAndIds() {
-         Map <String,Integer> ids = new HashMap<>();
-        
-        Connection connection=null;
-        try{
-                        connection=DriverManager.getConnection(JDBC_URL,JDBC_LOGIN,JDBC_PASSWORD);
-                        Statement stmt = connection.createStatement();
-                        ResultSet rs=stmt.executeQuery(SELECT_ID_AND_LOGIN_QUERY);
-                        while(rs.next())
-                            {                        
-                                String login=rs.getString("login");
-                                Integer id=rs.getInt("id");
-                                ids.put(login, id);
-                                        
-                            }
-                        }
-                        catch(SQLException ex)
-                        {
-                            ex.printStackTrace();
-                        }
-            
-        return ids;
-    }
-
-    @Override
-    public List<String> getNames() {
-        List <String> names = new ArrayList<>();
-        
-        Connection connection=null;
-        try{
-                        connection=DriverManager.getConnection(JDBC_URL,JDBC_LOGIN,JDBC_PASSWORD);
-                        Statement stmt = connection.createStatement();
-                        ResultSet rs=stmt.executeQuery(SELECT_NAMES_QUERY);
-                        while(rs.next())
-                            {                        
-                                names.add(rs.getString("nick"));
-                                        
-                            }
-                        }
-                        catch(SQLException ex)
-                        {
-                            ex.printStackTrace();
-                        }
-            
-        return names;
-    }
-
-    @Override
-    public List<String> getLogins() {
-        List <String> logins = new ArrayList<>();
-        
-        Connection connection=null;
-        try{
-                        connection=DriverManager.getConnection(JDBC_URL,JDBC_LOGIN,JDBC_PASSWORD);
-                        Statement stmt = connection.createStatement();
-                        ResultSet rs=stmt.executeQuery(SELECT_LOGINS_QUERY);
-                        while(rs.next())
-                            {                        
-                                logins.add(rs.getString("login"));
-                                        
-                            }
-                        }
-                        catch(SQLException ex)
-                        {
-                            ex.printStackTrace();
-                        }
-            
-        return logins;
-    }
+    
     
 }

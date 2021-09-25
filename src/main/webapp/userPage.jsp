@@ -19,6 +19,10 @@
     </head>
     <body>
         
+        <p class="center">${votesToHeaven} человек проголосовало,за то что вы попадете в рай</p>
+        <br/>
+        <p class="center">${votesToHell} человек проголосовало,за то что вы попадете в ад</p>
+        <br/>
         <a class="center" href="create">Создать</a>
         <br/>
         <a class="center" href="logout">Выйти</a>

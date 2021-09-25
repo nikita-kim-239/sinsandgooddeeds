@@ -54,7 +54,7 @@
     </dependency>
     <dependency>
         <groupId>org.springframework</groupId>
-        <artifactId>spring-jdbc</artifactId>
+        <artifactId>spring-orm</artifactId>
         <version>5.3.9</version>
     </dependency>
     <dependency>
@@ -68,7 +68,28 @@
         <artifactId>commons-codec</artifactId>
         <version>1.9</version>
     </dependency>
-    
+    <dependency>
+        <groupId>org.hibernate</groupId>
+        <artifactId>hibernate-core</artifactId>
+        <version>5.4.22.Final</version>
+    </dependency>
+    <dependency>
+        <groupId>org.hibernate.validator</groupId>
+        <artifactId>hibernate-validator</artifactId>
+        <version>6.1.6.Final</version>
+    </dependency>
+    <dependency>
+        <groupId>org.glassfish</groupId>
+        <artifactId>javax.el</artifactId>
+        <version>3.0.1-b12</version>
+        <scope>provided</scope>
+    </dependency>
+    <dependency>
+        <groupId>org.assertj</groupId>
+        <artifactId>assertj-core</artifactId>
+        <version>3.17.2</version>
+        <scope>test</scope>
+    </dependency>
     
   </dependencies>
 

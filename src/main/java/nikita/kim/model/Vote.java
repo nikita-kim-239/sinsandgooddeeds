@@ -6,48 +6,60 @@
 package nikita.kim.model;
 
 import java.time.LocalDateTime;
+import java.util.List;
+import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 
-/**
- *
- * @author Никита
- */
-public class Vote {
-    
-    
-    private Integer id;
-   
+@Entity
+@Table(name = "votes", schema = "public")
+@NamedQueries({
+        @NamedQuery(name = "Vote.removeOld", query = "UPDATE  Vote v SET v.actual=false WHERE v.votedUserId=:userId AND v.targetUserId=:targetUserId"),
+        @NamedQuery(name = "Vote.toHeaven", query = "SELECT v FROM Vote v where v.actual=true and v.targetUserId=:targetUserId and v.toHeaven=true"),
+        @NamedQuery(name = "Vote.toHell", query = "SELECT v FROM Vote v where v.actual=true and v.targetUserId=:targetUserId and v.toHeaven=false")
+
+})
+public class Vote extends AbstractBaseEntity{
+
+
+
+    @Column(name = "time_of_vote", nullable = false)
+    @NotNull
     private LocalDateTime dateTime;
-    
-    private Integer votedUserId; 
-    
+
+
+    @Column(name="user_id",nullable = false)
+    @NotNull
+    private Integer votedUserId;
+
+    @Column(name="target_user_id",nullable = false)
+    @NotNull
     private Integer targetUserId;
-    
+
+
+    @Column(name = "toheaven", nullable = false)
+    @NotNull
     private boolean toHeaven;
-    
+
+
+    @Column(name = "actual", nullable = false)
+    @NotNull
     private boolean actual;
     
+    public Vote()
+        {
+        }
     
-    public Vote (LocalDateTime dateTime,Boolean toHeaven,Integer votedUserId,Integer targetUserId)
+    
+    public Vote (LocalDateTime dateTime,Boolean toHeaven,Integer votedUserId,Integer targetUserId,Boolean actual)
         {
             this.dateTime=dateTime;
             this.toHeaven=toHeaven;
             this.votedUserId=votedUserId;
             this.targetUserId=targetUserId;
+            this.actual=actual;
         }
 
-    /**
-     * @return the id
-     */
-    public Integer getId() {
-        return id;
-    }
-
-    /**
-     * @param id the id to set
-     */
-    public void setId(Integer id) {
-        this.id = id;
-    }
+    
 
     /**
      * @return the dateTime
@@ -84,45 +96,32 @@ public class Vote {
         return targetUserId;
     }
 
-    /**
-     * @param targerUserId the targerUserId to set
-     */
+
     public void setTargetUserId(Integer targetUserId) {
         this.targetUserId = targetUserId;
     }
 
-    /**
-     * @return the toHeaven
-     */
+
     public boolean isToHeaven() {
         return toHeaven;
     }
 
-    /**
-     * @param toHeaven the toHeaven to set
-     */
+
     public void setToHeaven(boolean toHeaven) {
         this.toHeaven = toHeaven;
     }
 
-    /**
-     * @return the actual
-     */
+
     public boolean isActual() {
         return actual;
     }
 
-    /**
-     * @param actual the actual to set
-     */
+
     public void setActual(boolean actual) {
         this.actual = actual;
     }
     
     
-    public Boolean isNew()
-        {
-            return id==null;
-        }
+    
     
 }

@@ -22,6 +22,8 @@ public class LogoutServlet extends HttpServlet{
         {
             
               SecurityUtil.setCurrentUser(null);
+              SecurityUtil.setVotesToHeaven(null);
+              SecurityUtil.setVotesToHell(null);              
               resp.sendRedirect(req.getContextPath()+"/login");         
         }
     

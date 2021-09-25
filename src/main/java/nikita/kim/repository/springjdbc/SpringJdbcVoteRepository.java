@@ -10,7 +10,6 @@ import nikita.kim.repository.VoteRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
-import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
 import org.springframework.stereotype.Repository;
 
@@ -56,6 +55,17 @@ public class SpringJdbcVoteRepository implements VoteRepository{
     @Override
     public void removeOldVote(int userId, int targetUserId) {
         jdbcTemplate.update("update votes set actual=false where user_id=? and target_user_id=? and actual=true", userId,targetUserId);
+    }
+
+    @Override
+    public Integer votesToHeaven(int userId) {
+        
+        return jdbcTemplate.queryForObject("select count(*) from votes where actual=true and toheaven=true and target_user_id=?",new Object[]{userId},Integer.class);
+    }
+
+    @Override
+    public Integer votesToHell(int userId) {
+         return jdbcTemplate.queryForObject("select count(*) from votes where actual=true and toheaven=false and target_user_id=?",new Object[]{userId},Integer.class);
     }
     
 }

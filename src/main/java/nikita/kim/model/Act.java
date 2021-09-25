@@ -7,21 +7,54 @@ package nikita.kim.model;
 
 import java.io.Serializable;
 import java.time.LocalDate;
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
+import javax.persistence.Table;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 
-/**
- *
- * @author Никита
- */
-public class Act implements Serializable{
+
+
+@Entity
+@Table(name = "acts", schema = "public")
+@NamedQueries({
+        @NamedQuery(name = "Act.GetAll", query = "SELECT a FROM Act a WHERE a.user.id=:userId"),
+        @NamedQuery(name = "Act.Delete", query = "DELETE FROM Act a WHERE a.id=:id AND a.user.id=:userId"),
+        @NamedQuery(name = "Act.GetById", query = "SELECT a FROM Act a WHERE a.user.id=:userId and a.id=:id")
+        
+ 
+})
+public class Act extends AbstractBaseEntity{
     
     
-    private Integer id;
     
+    @Column(name = "sin", nullable = false)
+    @NotNull
     private Boolean sin;
     
+    
+    @Column(name = "acted", nullable = false)
+    @NotNull
     private LocalDate acted;
     
+    
+    @Column(name = "description", nullable = false)
+    @NotBlank
+    @Size(min = 2, max = 120)
     private String description;
+    
+    
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "user_id", nullable = false)
+    @NotNull
+    private User user;
     
     public Act()
         {
@@ -35,71 +68,48 @@ public class Act implements Serializable{
         }
     
     public Act(Integer id,Boolean sin,LocalDate acted,String description)
-        {
-            this.id=id;
+        {   super(id);
             this.sin=sin;
             this.acted=acted;
             this.description=description;
         }
-
-    
-    
-
-    /**
-     * @return the id
-     */
-    public Integer getId() {
-        return id;
-    }
-
-    /**
-     * @param id the id to set
-     */
-    public void setId(Integer id) {
-        this.id = id;
-    }
-
-    /**
-     * @return the date
-     */
-   
 
   
     public String getDescription() {
         return description;
     }
 
-    /**
-     * @param description the description to set
-     */
+    
     public void setDescription(String description) {
         this.description = description;
     }
 
-    /**
-     * @return the sin
-     */
+   
     public Boolean getSin() {
         return sin;
     }
 
-    /**
-     * @param sin the sin to set
-     */
+    
     public void setSin(Boolean sin) {
         this.sin = sin;
     }
     
-    public boolean isNew()
-        {
-            return id==null;
-        }
     
+    public User getUser() {
+        return user;
+    }
+    public void setUser(User user) {
+        this.user = user;
+    }
     
     @Override
     public String toString()
         {
-            return "{Id: "+id+" Sin "+sin+" Acted "+acted+" Description "+description+" }";
+            return "Act{Id: "
+                    +id+" Sin "
+                    +sin+" Acted "
+                    +acted+" Description "
+                    +description+" }";
         }
 
     /**

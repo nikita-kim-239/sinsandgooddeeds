@@ -7,15 +7,12 @@ package nikita.kim.repository.springjdbc;
 
 import java.util.List;
 import nikita.kim.model.Act;
-import nikita.kim.model.User;
 import nikita.kim.repository.ActRepository;
+import nikita.kim.util.ActMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.support.DataAccessUtils;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
-import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
-import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
 import org.springframework.stereotype.Repository;
 
 @Repository
@@ -25,41 +22,28 @@ public class SpringJdbcActRepository implements ActRepository{
     
     private final JdbcTemplate jdbcTemplate;
     
-    private final NamedParameterJdbcTemplate namedParameterJdbcTemplate;
     
-    private final SimpleJdbcInsert insertUser;
     
     
     @Autowired
-    public SpringJdbcActRepository(JdbcTemplate jdbcTemplate, NamedParameterJdbcTemplate namedParameterJdbcTemplate) {
+    public SpringJdbcActRepository(JdbcTemplate jdbcTemplate) {
        
-        this.insertUser = new SimpleJdbcInsert(jdbcTemplate)
-                .withTableName("acts")
-                .usingGeneratedKeyColumns("id");    
+           
         this.jdbcTemplate = jdbcTemplate;
-        this.namedParameterJdbcTemplate = namedParameterJdbcTemplate;
+        
         
     }
     
     @Override
-    public Act save(Act act, int userId) {
-        MapSqlParameterSource map = new MapSqlParameterSource()
-                .addValue("id", act.getId())
-                .addValue("sin", act.getSin())
-                .addValue("acted", act.getActed())
-                .addValue("description", act.getDescription())
-                .addValue("user_id",userId);
-                ;
-
-        if (act.isNew()) {
-            Number newKey = insertUser.executeAndReturnKey(map);
-            act.setId(newKey.intValue());
-        } else if (namedParameterJdbcTemplate.update(
-                "UPDATE acts SET sin=:sin, acted:=acted,description=:description " +
-                        "WHERE id=:id", map) == 0) {
-            return null;
-        }
-        return act;
+    public boolean create(Act act, Integer userId) {
+        return (jdbcTemplate.update(
+                "insert into acts (sin,acted,description,user_id) values (?,?,?,?)",act.getSin(),act.getActed(),act.getDescription(),userId) != 0); 
+    }
+    
+    @Override
+    public boolean update(Act act, Integer userId) {
+        return (jdbcTemplate.update(
+                "update acts set sin=?,acted=?,description=? where id=?",act.getSin(),act.getActed(),act.getDescription(),act.getId()) != 0); 
     }
 
     @Override
@@ -68,14 +52,14 @@ public class SpringJdbcActRepository implements ActRepository{
     }
 
     @Override
-    public Act get(int id, int userId) {
-        List<Act> acts = jdbcTemplate.query("SELECT * FROM users WHERE id=? and user_id=?", ROW_MAPPER, id,userId);
+    public Act get(Integer id, Integer userId) {
+        List<Act> acts = jdbcTemplate.query("SELECT * FROM acts WHERE id=? and user_id=?", new ActMapper(), id,userId);
         return DataAccessUtils.singleResult(acts);
     }
 
     @Override
     public List<Act> getAll(int userId) {
-       return jdbcTemplate.query("select * from acts where user_id=?",ROW_MAPPER,userId); 
+       return jdbcTemplate.query("select * from acts where user_id=?",new ActMapper(),userId); 
     }
     
 }

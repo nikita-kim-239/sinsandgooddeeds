@@ -5,43 +5,25 @@
  */
 package nikita.kim.repository.jdbc;
 
+import nikita.kim.config.JdbcConfig;
+import nikita.kim.data.AbstractActRepositoryTest;
 import org.junit.Test;
 import static org.junit.Assert.*;
+import org.junit.BeforeClass;
+import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 
 /**
  *
  * @author Никита
  */
-public class JdbcActRepositoryTest {
+public class JdbcActRepositoryTest extends AbstractActRepositoryTest{
     
-    
+    @BeforeClass
+    public static void beforeClass()
+        {
+            context=new AnnotationConfigApplicationContext(JdbcConfig.class);
+            actRepository=context.getBean(JdbcActRepository.class);
+        }
 
-    /**
-     * Test of save method, of class JdbcActRepository.
-     */
-    @Test
-    public void testSave() {
-    }
-
-    /**
-     * Test of delete method, of class JdbcActRepository.
-     */
-    @Test
-    public void testDelete() {
-    }
-
-    /**
-     * Test of get method, of class JdbcActRepository.
-     */
-    @Test
-    public void testGet() {
-    }
-
-    /**
-     * Test of getAll method, of class JdbcActRepository.
-     */
-    @Test
-    public void testGetAll() {
-    }
     
 }
